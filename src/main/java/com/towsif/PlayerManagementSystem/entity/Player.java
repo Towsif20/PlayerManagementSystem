@@ -67,6 +67,18 @@ public class Player implements Serializable
     @JsonIgnore
     private List<Match> matches;
 
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @JoinTable(
+            name = "player_sponsor",
+            joinColumns = @JoinColumn(name = "player_id"),
+            inverseJoinColumns = @JoinColumn(name = "sponsor_id")
+    )
+    @JsonIgnore
+    private List<Sponsor> sponsors;
+
     @Override
     public String toString()
     {

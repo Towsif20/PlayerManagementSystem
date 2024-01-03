@@ -31,10 +31,6 @@ public class Sponsor implements Serializable
     @NotBlank
     private String name;
 
-    private LocalDate contractStartDate;
-
-    private LocalDate contractEndDate;
-
     @JsonIgnore
     private LocalDateTime createdAt;
 

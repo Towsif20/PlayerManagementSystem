@@ -1,6 +1,8 @@
 package com.towsif.PlayerManagementSystem.service;
 
+import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Sponsor;
+import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +67,15 @@ public class SponsorService
         sponsorFromRequest.setCreatedAt(sponsorFromDB.getCreatedAt());
 
         return sponsorRepository.save(sponsorFromRequest);
+    }
+
+    public List<Player> findPlayersBySponsorId(Long sponsorId)
+    {
+        return sponsorRepository.findPlayersBySponsorId(sponsorId);
+    }
+
+    public List<Team> findTeamsBySponsorId(Long sponsorId)
+    {
+        return sponsorRepository.findTeamsBySponsorId(sponsorId);
     }
 }

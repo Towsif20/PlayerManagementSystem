@@ -2,9 +2,11 @@ package com.towsif.PlayerManagementSystem.service;
 
 import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
+import com.towsif.PlayerManagementSystem.entity.Sponsor;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.MatchRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
+import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import com.towsif.PlayerManagementSystem.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class TeamService
 
     @Autowired
     private MatchRepository matchRepository;
+
+    @Autowired
+    private SponsorRepository sponsorRepository;
 
     @Autowired
     private PaginationAndSortingService paginationAndSortingService;
@@ -147,5 +152,26 @@ public class TeamService
     public List<Match> findMatchesByAwayTeamId(Long teamId)
     {
         return matchRepository.findMatchByAwayTeamIdAndDeletedFalse(teamId);
+    }
+
+    public String addSponsorToTeam(Long teamId, Long sponsorId)
+    {
+        Team team = teamRepository.findTeamByIdAndDeletedFalse(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + teamId));
+
+        Sponsor sponsor = sponsorRepository.findSponsorByIdAndDeletedFalse(sponsorId)
+                .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + sponsorId));
+
+        team.getSponsors().add(sponsor);
+
+        return "Added sponsor to team";
+    }
+
+    public List<Sponsor> findSponsorByTeamId(Long teamId)
+    {
+        Team team = teamRepository.findTeamByIdAndDeletedFalse(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + teamId));
+
+        return team.getSponsors();
     }
 }

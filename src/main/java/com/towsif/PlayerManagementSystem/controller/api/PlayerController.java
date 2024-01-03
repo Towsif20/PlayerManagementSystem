@@ -2,6 +2,7 @@ package com.towsif.PlayerManagementSystem.controller.api;
 
 import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
+import com.towsif.PlayerManagementSystem.entity.Sponsor;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.service.PlayerService;
 import jakarta.validation.Valid;
@@ -31,10 +32,17 @@ public class PlayerController
         return playerService.savePlayer(player);
     }
 
+//    recheck
     @PostMapping("/{playerId}/matches/{matchId}")
     public String addMatchToPlayer(@PathVariable("playerId") Long playerId, @PathVariable("matchId")  Long matchId)
     {
         return playerService.addMatchToPlayer(playerId, matchId);
+    }
+
+    @PostMapping("/{playerId}/sponsors/{sponsorId}/add")
+    public String addSponsorToPlayer(@PathVariable("playerId") Long playerId, @PathVariable("sponsorId") Long sponsorId)
+    {
+        return playerService.addSponsorToPlayer(playerId, sponsorId);
     }
 
     @GetMapping
@@ -80,5 +88,11 @@ public class PlayerController
     public Team findTeamByPlayer(@PathVariable("id") Long id)
     {
         return playerService.findTeamById(id);
+    }
+
+    @GetMapping("/{playerId}/sponsors")
+    public List<Sponsor> findSponsorByPlayerId(@PathVariable("playerId") Long id)
+    {
+        return playerService.findSponsorByPlayerId(id);
     }
 }

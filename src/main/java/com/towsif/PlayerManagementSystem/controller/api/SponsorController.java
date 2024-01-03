@@ -1,6 +1,8 @@
 package com.towsif.PlayerManagementSystem.controller.api;
 
+import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Sponsor;
+import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.service.SponsorService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -60,5 +62,17 @@ public class SponsorController
         }
 
         return sponsorService.updateSponsorById(id, sponsor);
+    }
+
+    @GetMapping("{sponsorId}/players")
+    public List<Player> findPLayersBySponsorId(@PathVariable("sponsorId") Long sponsorId)
+    {
+        return sponsorService.findPlayersBySponsorId(sponsorId);
+    }
+
+    @GetMapping("{sponsorId}/teams")
+    public List<Team> findTeamsBySponsorId(@PathVariable("sponsorId") Long sponsorId)
+    {
+        return sponsorService.findTeamsBySponsorId(sponsorId);
     }
 }

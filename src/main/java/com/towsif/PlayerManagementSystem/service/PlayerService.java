@@ -2,15 +2,16 @@ package com.towsif.PlayerManagementSystem.service;
 
 import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
+import com.towsif.PlayerManagementSystem.entity.Sponsor;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.MatchRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
+import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,9 @@ public class PlayerService
 
     @Autowired
     private MatchRepository matchRepository;
+
+    @Autowired
+    private SponsorRepository sponsorRepository;
 
     @Autowired
     private PaginationAndSortingService paginationAndSortingService;
@@ -108,5 +112,28 @@ public class PlayerService
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + id));
 
         return player.getTeam();
+    }
+
+    public String addSponsorToPlayer(Long playerId, Long sponsorId)
+    {
+        Player player = playerRepository.findPlayerByIdAndDeletedFalse(playerId)
+                .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + playerId));
+
+        Sponsor sponsor = sponsorRepository.findSponsorByIdAndDeletedFalse(sponsorId)
+                .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + sponsorId));
+
+        player.getSponsors().add(sponsor);
+
+        playerRepository.save(player);
+
+        return "Added sponsor to player";
+    }
+
+    public List<Sponsor> findSponsorByPlayerId(Long id)
+    {
+        Player player = playerRepository.findPlayerByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + id));
+
+        return player.getSponsors();
     }
 }
