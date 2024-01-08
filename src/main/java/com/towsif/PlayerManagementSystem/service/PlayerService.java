@@ -5,6 +5,7 @@ import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Sponsor;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.MatchRepository;
+import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,6 +29,9 @@ public class PlayerService
 
     @Autowired
     private SponsorRepository sponsorRepository;
+
+    @Autowired
+    private PerformanceRepository performanceRepository;
 
     @Autowired
     private PaginationAndSortingService paginationAndSortingService;
@@ -135,5 +139,10 @@ public class PlayerService
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + id));
 
         return player.getSponsors();
+    }
+
+    public Long findRunsByPlayerId(Long id)
+    {
+        return performanceRepository.findRunsByPlayerId(id);
     }
 }

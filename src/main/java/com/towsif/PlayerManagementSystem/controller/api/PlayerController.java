@@ -95,4 +95,10 @@ public class PlayerController
     {
         return playerService.findSponsorByPlayerId(id);
     }
+
+    @GetMapping("/{id}/runs")
+    public Long findRunsByPlayerId(@PathVariable("id") Long id)
+    {
+        return playerService.findRunsByPlayerId(id);
+    }
 }

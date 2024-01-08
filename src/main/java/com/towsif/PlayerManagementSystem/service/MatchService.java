@@ -4,6 +4,7 @@ import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.MatchRepository;
+import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import com.towsif.PlayerManagementSystem.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +30,9 @@ public class MatchService
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    PerformanceRepository performanceRepository;
 
     @Autowired
     private PaginationAndSortingService paginationAndSortingService;
@@ -101,10 +105,17 @@ public class MatchService
         Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
                 .orElseThrow(() -> new EntityNotFoundException("No match found with " + matchId));
 
+        List<Player> homePLayers = playerRepository.findPlayerByTeamIdAndDeletedFalse(match.getHomeTeam().getId());
+        List<Player> awayPLayers = playerRepository.findPlayerByTeamIdAndDeletedFalse(match.getAwayTeam().getId());
+
         List<Long> playerIds = new ArrayList<>();
         playerIdsMap.get("playerIds").forEach(id -> playerIds.add(Long.valueOf(id)));
 
         List<Player> players = playerRepository.findAllById(playerIds);
+
+        players = players.stream()
+                        .filter(player -> homePLayers.contains(player) || awayPLayers.contains(player))
+                        .toList();
 
         players.forEach(player -> player.getMatches().add(match));
 
@@ -119,5 +130,15 @@ public class MatchService
                 .orElseThrow(() -> new EntityNotFoundException("No match found with " + id));
 
         return Arrays.asList(match.getHomeTeam(), match.getAwayTeam());
+    }
+
+    public Long findRunsByMatchId(Long id)
+    {
+        return performanceRepository.findRunsByMatchId(id);
+    }
+
+    public Long findRunsByMatchIdAndPlayerId(Long matchId, Long teamId)
+    {
+        return performanceRepository.findTotalRunsInAMatchByTeamId(matchId, teamId);
     }
 }
