@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Player Management System</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="mb-4">Player Management System</h2>
+
+    <!-- Bootstrap buttons linking to different pages -->
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <a th:href="@{/players}" class="btn btn-secondary btn-block">Players</a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a th:href="@{/teams}" class="btn btn-secondary btn-block">Teams</a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a th:href="@{/matches}" class="btn btn-secondary btn-block">Matches</a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a th:href="@{/performances}" class="btn btn-secondary btn-block">Stats</a>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap JS and Popper.js scripts (required for Bootstrap) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

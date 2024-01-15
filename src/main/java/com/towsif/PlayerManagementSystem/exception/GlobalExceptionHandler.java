@@ -1,41 +1,44 @@
 package com.towsif.PlayerManagementSystem.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler
 {
     @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleEntityNotFoundException(EntityNotFoundException exception)
+    public Object handleEntityNotFoundException(EntityNotFoundException exception, HttpServletRequest request)
     {
-        return exception.getMessage();
+        boolean isApiRequest = isApiRequest(request);
+
+        if(isApiRequest)
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+
+        return "error";
     }
 
-    @ExceptionHandler(PropertyReferenceException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handlePropertyReferenceException(PropertyReferenceException exception)
+    @ExceptionHandler({PropertyReferenceException.class, ValidationException.class, ClassCastException.class})
+    public Object handleBadRequests(RuntimeException exception, HttpServletRequest request)
     {
-        return exception.getMessage();
+        boolean isApiRequest = isApiRequest(request);
+
+        if(isApiRequest)
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+
+        return "error";
     }
 
-    @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleValidationException(ValidationException exception)
+    private static boolean isApiRequest(HttpServletRequest request)
     {
-        return exception.getMessage();
-    }
-
-    @ExceptionHandler(ClassCastException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleCastException(ClassCastException exception)
-    {
-        return "Please provide valid values";
+        return request.getRequestURI().startsWith("/api");
     }
 }

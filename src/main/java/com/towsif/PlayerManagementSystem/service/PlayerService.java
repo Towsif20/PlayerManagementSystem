@@ -10,6 +10,7 @@ import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,11 +60,11 @@ public class PlayerService
         return "Added match to player";
     }
 
-    public List<Player> findAllPlayers(int page, int size, String sortBy, String sortOrder)
+    public Page<Player> findAllPlayers(int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return playerRepository.findPlayerByDeletedFalse(pageable).getContent();
+        return playerRepository.findPlayerByDeletedFalse(pageable);
     }
 
     public Player findPlayerById(Long id)

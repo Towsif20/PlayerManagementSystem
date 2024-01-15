@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@RestController("TeamRestController")
 @RequestMapping("/api/teams/")
 public class TeamController
 {

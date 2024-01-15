@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Player</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class=" mb-4">Player Details</h2>
+
+    <!-- Display basic player information in a Bootstrap card -->
+    <div class="card mb-4 mr-8">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="mb-2">Name</p>
+                    <p class="mb-2">Date of Birth</p>
+                    <p class="mb-2">Team</p>
+                    <p class="mb-2">Role</p>
+                </div>
+
+                <div class="col-md-4">
+                    <h5 class="card-title text-primary" th:text="${player.name}"></h5>
+                    <strong><p class="mb-2" th:text="${#temporals.format(player.dateOfBirth, 'yyyy-MM-dd')}"></p></strong>
+                    <strong><p class="mb-2">
+                        <a th:text="${player.team != null} ? ${player.team.name} : None"
+                           th:href="@{/teams/{id}/(id = ${player.team.id})}"></a>
+                    </p></strong>
+                    <strong><p class="mb-2" th:text="${player.role}"></p></strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
+    <div class="row">
+        <div class="col-10 d-flex">
+            <a href="/matches?playerId=${player.id}" class="btn btn-primary me-3">View Matches</a>
+            <a href="/stats?playerId=${player.id}" class="btn btn-success">View Stats</a>
+        </div>
+        <div class="col-1 text-end">
+            <a th:href="@{/players/{id}/update(id = ${player.id})}" class="btn btn-info me-3">Edit</a>
+        </div>
+        <div class="col-1 text-end">
+            <a th:href="@{/players/{id}/delete(id = ${player.id})}" class="btn btn-danger me-3">Delete</a>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("PlayerRestController")
 @RequestMapping("/api/players/")
 public class PlayerController
 {
@@ -51,7 +51,7 @@ public class PlayerController
                                        @RequestParam(defaultValue = "id") String sortBy,
                                        @RequestParam(defaultValue = "asc") String sortOrder)
     {
-        return playerService.findAllPlayers(page, size, sortBy, sortOrder);
+        return playerService.findAllPlayers(page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/{id}")

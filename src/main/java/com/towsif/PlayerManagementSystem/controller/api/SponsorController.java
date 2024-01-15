@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("SponsorRestController")
 @RequestMapping("/api/sponsors/")
 public class SponsorController
 {

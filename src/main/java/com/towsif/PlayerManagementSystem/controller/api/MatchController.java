@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@RestController("MatchRestController")
 @RequestMapping("/api/matches")
 public class MatchController
 {

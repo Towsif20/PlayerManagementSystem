@@ -174,4 +174,9 @@ public class TeamService
 
         return team.getSponsors();
     }
+
+    public List<Team> findAll()
+    {
+        return teamRepository.findTeamByDeletedFalse();
+    }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("PerformanceRestController")
 @RequestMapping("/api/performances/")
 public class PerformanceController
 {
