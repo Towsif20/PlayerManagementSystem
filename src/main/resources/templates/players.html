@@ -75,9 +75,8 @@
             </tbody>
         </table>
     </div>
-    <div class="text-center m-2">
-        <span th:if="${playerPage.totalPages > 0}"
-              th:each="pageNumber: ${#numbers.sequence(0, playerPage.totalPages - 1)}">
+    <div th:if="${playerPage.totalPages > 1}" class="text-center m-2">
+        <span th:each="pageNumber: ${#numbers.sequence(0, playerPage.totalPages - 1)}">
             <a th:href="@{/players(size=${playerPage.size}, page=${pageNumber}, sortBy=${sortBy}, sortOrder=${sortOrder})}"
                class="btn"
                th:classappend="${pageNumber==playerPage.number} ? 'page-item active'"

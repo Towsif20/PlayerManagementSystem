@@ -28,4 +28,6 @@ public interface PlayerRepository extends JpaRepository<Player, Long>
     void deletePlayerById(@Param("id") Long id, @Param("deletedAt") LocalDateTime deletedAt);
 
     List<Player> findPlayerByTeamIdAndDeletedFalse(Long id);
+
+    Page<Player> findPlayerByTeamIdAndDeletedFalse(Pageable pageable, Long id);
 }

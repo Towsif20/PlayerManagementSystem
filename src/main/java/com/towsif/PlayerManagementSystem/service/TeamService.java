@@ -1,5 +1,6 @@
 package com.towsif.PlayerManagementSystem.service;
 
+import com.towsif.PlayerManagementSystem.dto.TeamWithPlayerCountDTO;
 import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Sponsor;
@@ -10,6 +11,8 @@ import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import com.towsif.PlayerManagementSystem.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -46,11 +50,11 @@ public class TeamService
     }
 
     @Transactional
-    public List<Team> findAllTeams(int page, int size, String sortBy, String sortOrder)
+    public Page<Team> findAllTeams(int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return teamRepository.findTeamByDeletedFalse(pageable).getContent();
+        return teamRepository.findTeamByDeletedFalse(pageable);
     }
 
     public Team findTeamById(Long id)
@@ -178,5 +182,18 @@ public class TeamService
     public List<Team> findAll()
     {
         return teamRepository.findTeamByDeletedFalse();
+    }
+
+    public Page<TeamWithPlayerCountDTO> findAllTeamsWithPlayerCount(int page, int size, String sortBy, String sortOrder)
+    {
+        Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
+
+        Page<Object[]> resultPage = teamRepository.findAllTeamsWithPlayerCount(pageable);
+
+        List<TeamWithPlayerCountDTO> teamWithPlayerCountDTOList = resultPage.getContent().stream()
+                .map(objects -> new TeamWithPlayerCountDTO((Team) objects[0], (Long) objects[1]))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(teamWithPlayerCountDTOList, pageable, resultPage.getTotalElements());
     }
 }

@@ -39,7 +39,7 @@ public class TeamController
                                    @RequestParam(defaultValue = "id") String sortBy,
                                    @RequestParam(defaultValue = "asc") String sortOrder)
     {
-        return teamService.findAllTeams(page, size, sortBy, sortOrder);
+        return teamService.findAllTeams(page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/{id}")

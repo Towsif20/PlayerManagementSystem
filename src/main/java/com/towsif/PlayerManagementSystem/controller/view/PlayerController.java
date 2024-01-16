@@ -47,11 +47,11 @@ public class PlayerController
 
         playerService.savePlayer(player);
 
-        return "redirect:/players";
+        return "redirect:/players/" + player.getId();
     }
 
-    @GetMapping("")
-    public String findAllPlayers(@RequestParam(defaultValue = "0") int page,
+    @GetMapping
+    public String showAllPlayers(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size,
                                  @RequestParam(defaultValue = "id") String sortBy,
                                  @RequestParam(defaultValue = "asc") String sortOrder,
@@ -67,7 +67,7 @@ public class PlayerController
     }
 
     @GetMapping("/{id}")
-    public String findPlayerById(@PathVariable("id") Long id, Model model)
+    public String showPlayerById(@PathVariable("id") Long id, Model model)
     {
         Player player = playerService.findPlayerById(id);
 
@@ -94,6 +94,6 @@ public class PlayerController
     {
         playerService.deletePlayerById(id);
 
-        return "redirect:/";
+        return "redirect:/players";
     }
 }

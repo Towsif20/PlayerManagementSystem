@@ -16,23 +16,27 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler
 {
     @ExceptionHandler(EntityNotFoundException.class)
-    public Object handleEntityNotFoundException(EntityNotFoundException exception, HttpServletRequest request)
+    public Object handleEntityNotFoundException(EntityNotFoundException exception, HttpServletRequest request, Model model)
     {
         boolean isApiRequest = isApiRequest(request);
 
         if(isApiRequest)
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
 
+        model.addAttribute("errorMsg", exception.getMessage());
+
         return "error";
     }
 
     @ExceptionHandler({PropertyReferenceException.class, ValidationException.class, ClassCastException.class})
-    public Object handleBadRequests(RuntimeException exception, HttpServletRequest request)
+    public Object handleBadRequests(RuntimeException exception, HttpServletRequest request, Model model)
     {
         boolean isApiRequest = isApiRequest(request);
 
         if(isApiRequest)
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+
+        model.addAttribute("errorMsg", exception.getMessage());
 
         return "error";
     }

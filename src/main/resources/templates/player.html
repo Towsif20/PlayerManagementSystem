@@ -26,7 +26,7 @@
                     <strong><p class="mb-2" th:text="${#temporals.format(player.dateOfBirth, 'yyyy-MM-dd')}"></p></strong>
                     <strong><p class="mb-2">
                         <a th:text="${player.team != null} ? ${player.team.name} : None"
-                           th:href="@{/teams/{id}/(id = ${player.team.id})}"></a>
+                           th:href="@{/teams/{id}(id = ${player.team.id})}"></a>
                     </p></strong>
                     <strong><p class="mb-2" th:text="${player.role}"></p></strong>
                 </div>
@@ -37,8 +37,8 @@
     <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-10 d-flex">
-            <a href="/matches?playerId=${player.id}" class="btn btn-primary me-3">View Matches</a>
-            <a href="/stats?playerId=${player.id}" class="btn btn-success">View Stats</a>
+            <a th:href="@{/players/{id}/matches(id=${player.id})}" class="btn btn-primary me-3">View Matches</a>
+            <a th:href="@{/players/{id}/performances(id=${player.id})}" class="btn btn-success">View Stats</a>
         </div>
         <div class="col-1 text-end">
             <a th:href="@{/players/{id}/update(id = ${player.id})}" class="btn btn-info me-3">Edit</a>

@@ -67,6 +67,13 @@ public class PlayerService
         return playerRepository.findPlayerByDeletedFalse(pageable);
     }
 
+    public Page<Player> findAllPlayersByTeam(int page, int size, String sortBy, String sortOrder, Long teamId)
+    {
+        Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
+
+        return playerRepository.findPlayerByTeamIdAndDeletedFalse(pageable, teamId);
+    }
+
     public Player findPlayerById(Long id)
     {
         return playerRepository.findPlayerByIdAndDeletedFalse(id)
