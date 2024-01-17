@@ -43,7 +43,7 @@ public class SponsorService
     }
 
     @Transactional
-    public String deleteSponsorById(Long id)
+    public void deleteSponsorById(Long id)
     {
         Sponsor sponsor = sponsorRepository.findSponsorByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("No sponsor found with id " + id));
@@ -52,8 +52,6 @@ public class SponsorService
         sponsor.setDeletedAt(LocalDateTime.now());
 
         sponsorRepository.save(sponsor);
-
-        return "Deleted";
     }
 
     @Transactional

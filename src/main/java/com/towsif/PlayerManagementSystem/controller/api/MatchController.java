@@ -38,7 +38,9 @@ public class MatchController
     public String addPlayersToMatch(@PathVariable("matchId") Long matchId,
                                     @RequestBody Map<String, List<Integer>> playerIdsMap)
     {
-        return matchService.addPlayersToMatch(matchId, playerIdsMap);
+        matchService.addPlayersToMatch(matchId, playerIdsMap);
+
+        return "Added players to match";
     }
 
     @GetMapping
@@ -65,7 +67,9 @@ public class MatchController
     @DeleteMapping("/{id}")
     public String deleteMatchById(@PathVariable("id") Long id)
     {
-        return matchService.deleteMatchById(id);
+        matchService.deleteMatchById(id);
+
+        return "Deleted";
     }
 
     @PutMapping("/{id}")

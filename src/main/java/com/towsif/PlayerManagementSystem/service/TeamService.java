@@ -64,7 +64,7 @@ public class TeamService
     }
 
     @Transactional
-    public String deleteTeamById(Long id)
+    public void deleteTeamById(Long id)
     {
         Team team = teamRepository.findTeamByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("No Team Found with id " + id));
@@ -73,8 +73,6 @@ public class TeamService
         team.setDeletedAt(LocalDateTime.now());
 
         teamRepository.save(team);
-
-        return "Deleted";
     }
 
     @Transactional
@@ -91,7 +89,7 @@ public class TeamService
     }
 
     @Transactional
-    public String addPlayerToTeam(Long teamId, Long playerId)
+    public void addPlayerToTeam(Long teamId, Long playerId)
     {
         Team team = teamRepository.findTeamByIdAndDeletedFalse(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + teamId));
@@ -102,11 +100,9 @@ public class TeamService
         player.setTeam(team);
 
         playerRepository.save(player);
-
-        return "Added";
     }
 
-    public String removePlayerFromTeam(Long teamId, Long playerId)
+    public void removePlayerFromTeam(Long teamId, Long playerId)
     {
         Team team = teamRepository.findTeamByIdAndDeletedFalse(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + teamId));
@@ -117,8 +113,6 @@ public class TeamService
         player.setTeam(null);
 
         playerRepository.save(player);
-
-        return "Removed";
     }
 
     public List<Player> findPlayers(Long id)
@@ -126,7 +120,7 @@ public class TeamService
         return playerRepository.findPlayerByTeamIdAndDeletedFalse(id);
     }
 
-    public String addPlayersToTeam(Long teamId, Map<String, List<Integer>> playerIdsMap)
+    public void addPlayersToTeam(Long teamId, Map<String, List<Integer>> playerIdsMap)
     {
         Team team = teamRepository.findTeamByIdAndDeletedFalse(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + teamId));
@@ -139,8 +133,6 @@ public class TeamService
         players.forEach(player -> player.setTeam(team));
 
         teamRepository.save(team);
-
-        return "Added players to team";
     }
 
     public List<Match> findMatchesByTeamId(Long teamId)
@@ -158,7 +150,7 @@ public class TeamService
         return matchRepository.findMatchByAwayTeamIdAndDeletedFalse(teamId);
     }
 
-    public String addSponsorToTeam(Long teamId, Long sponsorId)
+    public void addSponsorToTeam(Long teamId, Long sponsorId)
     {
         Team team = teamRepository.findTeamByIdAndDeletedFalse(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + teamId));
@@ -167,8 +159,6 @@ public class TeamService
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + sponsorId));
 
         team.getSponsors().add(sponsor);
-
-        return "Added sponsor to team";
     }
 
     public List<Sponsor> findSponsorByTeamId(Long teamId)

@@ -49,7 +49,9 @@ public class PerformanceController
     @DeleteMapping("/{id}")
     public String deletePerformanceById(@PathVariable("id") Long id)
     {
-        return performanceService.deletePerformanceById(id);
+        performanceService.deletePerformanceById(id);
+
+        return "Deleted";
     }
 
     @PutMapping("/{id}")

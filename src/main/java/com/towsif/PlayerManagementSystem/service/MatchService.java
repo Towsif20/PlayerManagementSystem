@@ -68,7 +68,7 @@ public class MatchService
     }
 
     @Transactional
-    public String deleteMatchById(Long id)
+    public void deleteMatchById(Long id)
     {
         Match match = matchRepository.findMatchByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("No match found with " + id));
@@ -77,8 +77,6 @@ public class MatchService
         match.setDeletedAt(LocalDateTime.now());
 
         matchRepository.save(match);
-
-        return "Deleted";
     }
 
     @Transactional
@@ -100,7 +98,7 @@ public class MatchService
         return matchRepository.findPlayersByMatchId(matchId);
     }
 
-    public String addPlayersToMatch(Long matchId, Map<String, List<Integer>> playerIdsMap)
+    public void addPlayersToMatch(Long matchId, Map<String, List<Integer>> playerIdsMap)
     {
         Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
                 .orElseThrow(() -> new EntityNotFoundException("No match found with " + matchId));
@@ -120,8 +118,6 @@ public class MatchService
         players.forEach(player -> player.getMatches().add(match));
 
         matchRepository.save(match);
-
-        return "Added players to match";
     }
 
     public List<Team> findTeams(Long id)

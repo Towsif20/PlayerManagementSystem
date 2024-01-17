@@ -51,7 +51,9 @@ public class TeamController
     @DeleteMapping("/{id}")
     public String deleteTeamById(@PathVariable("id") Long id)
     {
-        return teamService.deleteTeamById(id);
+        teamService.deleteTeamById(id);
+
+        return "Deleted";
     }
 
     @PutMapping("/{id}")
@@ -69,26 +71,34 @@ public class TeamController
     @PostMapping("{teamId}/players/{playerId}/add")
     public String addPlayerToTeam(@PathVariable("teamId") Long teamId, @PathVariable("playerId") Long playerId)
     {
-        return teamService.addPlayerToTeam(teamId, playerId);
+        teamService.addPlayerToTeam(teamId, playerId);
+
+        return "Added";
     }
 
     @PostMapping("{teamId}/players/add")
     public String addPlayersToTeam(@PathVariable("teamId") Long teamId,
                                    @RequestBody Map<String, List<Integer>> playerIdsMap)
     {
-        return teamService.addPlayersToTeam(teamId, playerIdsMap);
+        teamService.addPlayersToTeam(teamId, playerIdsMap);
+
+        return "Added players to team";
     }
 
     @PostMapping("{teamId}/players/{playerId}/remove")
     public String removePlayerFromTeam(@PathVariable("teamId") Long teamId, @PathVariable("playerId") Long playerId)
     {
-        return teamService.removePlayerFromTeam(teamId, playerId);
+        teamService.removePlayerFromTeam(teamId, playerId);
+
+        return "Removed";
     }
 
     @PostMapping("/{teamId}/sponsors/{sponsorId}/add")
     public String addSponsorToPlayer(@PathVariable("teamId") Long teamId, @PathVariable("sponsorId") Long sponsorId)
     {
-        return teamService.addSponsorToTeam(teamId, sponsorId);
+        teamService.addSponsorToTeam(teamId, sponsorId);
+
+        return "Added sponsor to team";
     }
 
     @GetMapping("{teamId}/players")

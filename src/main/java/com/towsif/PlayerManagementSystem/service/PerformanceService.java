@@ -71,7 +71,7 @@ public class PerformanceService
     }
 
     @Transactional
-    public String deletePerformanceById(Long id)
+    public void deletePerformanceById(Long id)
     {
         Performance performance = performanceRepository.findPerformanceByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("Performance not found with id " + id));
@@ -80,8 +80,6 @@ public class PerformanceService
         performance.setDeletedAt(LocalDateTime.now());
 
         performanceRepository.save(performance);
-
-        return "Deleted";
     }
 
     @Transactional

@@ -49,7 +49,9 @@ public class SponsorController
     @DeleteMapping("/{id}")
     public String deleteSponsorById(@PathVariable("id") Long id)
     {
-        return sponsorService.deleteSponsorById(id);
+        sponsorService.deleteSponsorById(id);
+
+        return "Deleted";
     }
 
     @PutMapping("/{id}")

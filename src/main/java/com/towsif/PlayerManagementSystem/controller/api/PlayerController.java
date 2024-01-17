@@ -36,13 +36,17 @@ public class PlayerController
     @PostMapping("/{playerId}/matches/{matchId}")
     public String addMatchToPlayer(@PathVariable("playerId") Long playerId, @PathVariable("matchId")  Long matchId)
     {
-        return playerService.addMatchToPlayer(playerId, matchId);
+        playerService.addMatchToPlayer(playerId, matchId);
+
+        return "Added match to player";
     }
 
     @PostMapping("/{playerId}/sponsors/{sponsorId}/add")
     public String addSponsorToPlayer(@PathVariable("playerId") Long playerId, @PathVariable("sponsorId") Long sponsorId)
     {
-        return playerService.addSponsorToPlayer(playerId, sponsorId);
+        playerService.addSponsorToPlayer(playerId, sponsorId);
+
+        return "Added sponsor to player";
     }
 
     @GetMapping
@@ -63,7 +67,10 @@ public class PlayerController
     @DeleteMapping("/{id}")
     public String deletePlayerById(@PathVariable("id") Long id)
     {
-        return playerService.deletePlayerById(id);
+        playerService.deletePlayerById(id);
+
+        return "Deleted";
+
     }
 
     @PutMapping("/{id}")

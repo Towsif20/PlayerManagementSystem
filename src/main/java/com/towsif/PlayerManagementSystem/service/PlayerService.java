@@ -45,7 +45,7 @@ public class PlayerService
         return playerRepository.save(player);
     }
 
-    public String addMatchToPlayer(Long playerId, Long matchId)
+    public void addMatchToPlayer(Long playerId, Long matchId)
     {
         Player player = playerRepository.findPlayerByIdAndDeletedFalse(playerId)
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + playerId));
@@ -56,8 +56,6 @@ public class PlayerService
         player.getMatches().add(match);
 
         playerRepository.save(player);
-
-        return "Added match to player";
     }
 
     public Page<Player> findAllPlayers(int page, int size, String sortBy, String sortOrder)
@@ -81,7 +79,7 @@ public class PlayerService
     }
 
     @Transactional
-    public String deletePlayerById(Long id)
+    public void deletePlayerById(Long id)
     {
         Player player = playerRepository.findPlayerByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + id));
@@ -92,8 +90,6 @@ public class PlayerService
         playerRepository.save(player);
 
 //        playerRepository.deletePlayerById(id, LocalDateTime.now());
-
-        return "Deleted";
     }
 
     @Transactional
@@ -126,7 +122,7 @@ public class PlayerService
         return player.getTeam();
     }
 
-    public String addSponsorToPlayer(Long playerId, Long sponsorId)
+    public void addSponsorToPlayer(Long playerId, Long sponsorId)
     {
         Player player = playerRepository.findPlayerByIdAndDeletedFalse(playerId)
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + playerId));
@@ -137,8 +133,6 @@ public class PlayerService
         player.getSponsors().add(sponsor);
 
         playerRepository.save(player);
-
-        return "Added sponsor to player";
     }
 
     public List<Sponsor> findSponsorByPlayerId(Long id)
