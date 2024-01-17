@@ -30,8 +30,8 @@
                     <div class="row align-items-center">
                         <div class="col text-left">Name</div>
                         <div class="col-auto">
-                            <a th:href="@{/players(sortBy=name, sortOrder=asc)}" class="btn">&uarr;</a>
-                            <a th:href="@{/players(sortBy=name, sortOrder=desc)}" class="btn">&darr;</a>
+                            <a th:href="@{''(sortBy=name, sortOrder=asc)}" class="btn">&uarr;</a>
+                            <a th:href="@{''(sortBy=name, sortOrder=desc)}" class="btn">&darr;</a>
                         </div>
                     </div>
                 </th>
@@ -39,8 +39,8 @@
                     <div class="row align-items-center">
                         <div class="col text-left">Date of Birth</div>
                         <div class="col-auto">
-                            <a th:href="@{/players(sortBy=dateOfBirth, sortOrder=asc)}" class="btn">&uarr;</a>
-                            <a th:href="@{/players(sortBy=dateOfBirth, sortOrder=desc)}" class="btn">&darr;</a>
+                            <a th:href="@{''(sortBy=dateOfBirth, sortOrder=asc)}" class="btn">&uarr;</a>
+                            <a th:href="@{''(sortBy=dateOfBirth, sortOrder=desc)}" class="btn">&darr;</a>
                         </div>
                     </div>
                 </th>
@@ -48,8 +48,8 @@
                     <div class="row align-items-center">
                         <div class="col text-left">Role</div>
                         <div class="col-auto">
-                            <a th:href="@{/players(sortBy=role, sortOrder=asc)}" class="btn">&uarr;</a>
-                            <a th:href="@{/players(sortBy=role, sortOrder=desc)}" class="btn">&darr;</a>
+                            <a th:href="@{''(sortBy=role, sortOrder=asc)}" class="btn">&uarr;</a>
+                            <a th:href="@{''(sortBy=role, sortOrder=desc)}" class="btn">&darr;</a>
                         </div>
                     </div>
                 </th>
@@ -57,8 +57,8 @@
                     <div class="row align-items-center">
                         <div class="col text-left">Team</div>
                         <div class="col-auto">
-                            <a th:href="@{/players(sortBy=team.name, sortOrder=asc)}" class="btn">&uarr;</a>
-                            <a th:href="@{/players(sortBy=team.name, sortOrder=desc)}" class="btn">&darr;</a>
+                            <a th:href="@{''(sortBy=team.name, sortOrder=asc)}" class="btn">&uarr;</a>
+                            <a th:href="@{''(sortBy=team.name, sortOrder=desc)}" class="btn">&darr;</a>
                         </div>
                     </div>
                 </th>
@@ -77,7 +77,7 @@
     </div>
     <div th:if="${playerPage.totalPages > 1}" class="text-center m-2">
         <span th:each="pageNumber: ${#numbers.sequence(0, playerPage.totalPages - 1)}">
-            <a th:href="@{/players(size=${playerPage.size}, page=${pageNumber}, sortBy=${sortBy}, sortOrder=${sortOrder})}"
+            <a th:href="@{''(size=${playerPage.size}, page=${pageNumber}, sortBy=${sortBy}, sortOrder=${sortOrder})}"
                class="btn"
                th:classappend="${pageNumber==playerPage.number} ? 'page-item active'"
                th:text=${pageNumber}></a>
