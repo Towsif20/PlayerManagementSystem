@@ -17,7 +17,7 @@ public class Team implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Team Name cannot be empty")
+    @NotBlank
     private String name;
 
     private String managerName;
@@ -39,13 +39,7 @@ public class Team implements Serializable
     private boolean deleted = false;
 
     @ManyToMany(
-            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
-    )
-    @JoinTable(
-            name = "team_sponsor",
-            joinColumns = @JoinColumn(name = "player_id"),
-            inverseJoinColumns = @JoinColumn(name = "sponsor_id")
     )
     @JsonIgnore
     private List<Sponsor> sponsors;

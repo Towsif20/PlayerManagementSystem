@@ -44,7 +44,6 @@ public class Match implements Serializable
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name = "winner_team_id")
     @JsonIgnore
     private Team winnerTeam;
 
@@ -52,7 +51,6 @@ public class Match implements Serializable
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name = "home_team_id")
     @JsonIgnore
     private Team homeTeam;
 
@@ -60,7 +58,6 @@ public class Match implements Serializable
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name = "away_team_id")
     @JsonIgnore
     private Team awayTeam;
 

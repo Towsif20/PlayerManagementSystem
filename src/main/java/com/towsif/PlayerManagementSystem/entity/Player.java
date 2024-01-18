@@ -47,30 +47,17 @@ public class Player implements Serializable
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name = "team_id")
     @JsonIgnore
     private Team team;
 
     @ManyToMany(
-            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
-    )
-    @JoinTable(
-            name = "player_match",
-            joinColumns = @JoinColumn(name = "player_id"),
-            inverseJoinColumns = @JoinColumn(name = "match_id")
     )
     @JsonIgnore
     private List<Match> matches;
 
     @ManyToMany(
-            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
-    )
-    @JoinTable(
-            name = "player_sponsor",
-            joinColumns = @JoinColumn(name = "player_id"),
-            inverseJoinColumns = @JoinColumn(name = "sponsor_id")
     )
     @JsonIgnore
     private List<Sponsor> sponsors;

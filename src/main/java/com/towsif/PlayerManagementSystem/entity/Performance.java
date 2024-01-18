@@ -43,7 +43,6 @@ public class Performance implements Serializable
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name = "player_id")
     @JsonIgnore
     private Player player;
 
@@ -51,7 +50,6 @@ public class Performance implements Serializable
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name = "match_id")
     @JsonIgnore
     Match match;
 
