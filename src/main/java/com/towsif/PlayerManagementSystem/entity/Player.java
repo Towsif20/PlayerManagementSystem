@@ -1,14 +1,11 @@
 package com.towsif.PlayerManagementSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.towsif.PlayerManagementSystem.entity.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -17,11 +14,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Player implements Serializable
 {
     @Id
@@ -38,9 +30,11 @@ public class Player implements Serializable
     private Role role;
 
     @JsonIgnore
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @JsonIgnore
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @JsonIgnore
@@ -80,6 +74,116 @@ public class Player implements Serializable
     )
     @JsonIgnore
     private List<Sponsor> sponsors;
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public LocalDate getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth)
+    {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Role getRole()
+    {
+        return role;
+    }
+
+    public void setRole(Role role)
+    {
+        this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt()
+    {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt)
+    {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt()
+    {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt)
+    {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt()
+    {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt)
+    {
+        this.deletedAt = deletedAt;
+    }
+
+    public boolean isDeleted()
+    {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted)
+    {
+        this.deleted = deleted;
+    }
+
+    public Team getTeam()
+    {
+        return team;
+    }
+
+    public void setTeam(Team team)
+    {
+        this.team = team;
+    }
+
+    public List<Match> getMatches()
+    {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches)
+    {
+        this.matches = matches;
+    }
+
+    public List<Sponsor> getSponsors()
+    {
+        return sponsors;
+    }
+
+    public void setSponsors(List<Sponsor> sponsors)
+    {
+        this.sponsors = sponsors;
+    }
 
     @Override
     public String toString()

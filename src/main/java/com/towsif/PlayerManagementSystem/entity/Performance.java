@@ -1,23 +1,15 @@
 package com.towsif.PlayerManagementSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Performance implements Serializable
 {
     @Id
@@ -34,9 +26,11 @@ public class Performance implements Serializable
     private Integer catches;
 
     @JsonIgnore
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @JsonIgnore
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @JsonIgnore
@@ -60,6 +54,106 @@ public class Performance implements Serializable
     @JoinColumn(name = "match_id")
     @JsonIgnore
     Match match;
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public Integer getRuns()
+    {
+        return runs;
+    }
+
+    public void setRuns(Integer runs)
+    {
+        this.runs = runs;
+    }
+
+    public Integer getWickets()
+    {
+        return wickets;
+    }
+
+    public void setWickets(Integer wickets)
+    {
+        this.wickets = wickets;
+    }
+
+    public Integer getCatches()
+    {
+        return catches;
+    }
+
+    public void setCatches(Integer catches)
+    {
+        this.catches = catches;
+    }
+
+    public LocalDateTime getCreatedAt()
+    {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt)
+    {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt()
+    {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt)
+    {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt()
+    {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt)
+    {
+        this.deletedAt = deletedAt;
+    }
+
+    public boolean isDeleted()
+    {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted)
+    {
+        this.deleted = deleted;
+    }
+
+    public Player getPlayer()
+    {
+        return player;
+    }
+
+    public void setPlayer(Player player)
+    {
+        this.player = player;
+    }
+
+    public Match getMatch()
+    {
+        return match;
+    }
+
+    public void setMatch(Match match)
+    {
+        this.match = match;
+    }
 
     @Override
     public String toString()

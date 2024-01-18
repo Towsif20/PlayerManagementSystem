@@ -1,11 +1,7 @@
 package com.towsif.PlayerManagementSystem.dto;
 
 import com.towsif.PlayerManagementSystem.entity.Team;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
 public class TeamWithPlayerCountDTO
 {
     private Team team;
@@ -21,4 +17,23 @@ public class TeamWithPlayerCountDTO
         this.playerCount = playerCount;
     }
 
+    public Team getTeam()
+    {
+        return team;
+    }
+
+    public void setTeam(Team team)
+    {
+        this.team = team;
+    }
+
+    public long getPlayerCount()
+    {
+        return playerCount;
+    }
+
+    public void setPlayerCount(long playerCount)
+    {
+        this.playerCount = playerCount;
+    }
 }
