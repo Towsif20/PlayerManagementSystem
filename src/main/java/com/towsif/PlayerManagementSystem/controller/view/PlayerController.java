@@ -33,16 +33,16 @@ public class PlayerController
         model.addAttribute("player", player);
         model.addAttribute("teams", teams);
 
-        return "create_player";
+        return "save_player";
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public String savePlayer(@Valid @ModelAttribute Player player, BindingResult bindingResult)
     {
         if (bindingResult.hasErrors())
         {
             System.out.println(bindingResult.getAllErrors());
-            return "create_player";
+            return "save_player";
         }
 
         playerService.savePlayer(player);
@@ -86,7 +86,7 @@ public class PlayerController
         model.addAttribute("update", true);
         model.addAttribute("teams", teams);
 
-        return "create_player";
+        return "save_player";
     }
 
     @GetMapping("/{id}/delete")

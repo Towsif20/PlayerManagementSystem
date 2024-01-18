@@ -25,13 +25,13 @@ public class TeamController
     @Autowired
     private PlayerService playerService;
 
-    @PostMapping
+    @PostMapping("/save")
     public String saveTeam(@Valid @ModelAttribute Team team, BindingResult bindingResult)
     {
         if (bindingResult.hasErrors())
         {
             System.out.println(bindingResult.getAllErrors());
-            return "create_team";
+            return "save_team";
         }
 
         teamService.saveTeam(team);
@@ -46,7 +46,7 @@ public class TeamController
 
         model.addAttribute("team", team);
 
-        return "create_team";
+        return "save_team";
     }
 
     @GetMapping("/{id}/update")
@@ -57,7 +57,7 @@ public class TeamController
         model.addAttribute("team", team);
         model.addAttribute("update", true);
 
-        return "create_team";
+        return "save_team";
     }
 
     @GetMapping

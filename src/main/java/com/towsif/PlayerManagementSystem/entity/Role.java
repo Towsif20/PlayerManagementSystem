@@ -1,4 +1,4 @@
-package com.towsif.PlayerManagementSystem.entity.enums;
+package com.towsif.PlayerManagementSystem.entity;
 
 public enum Role
 {

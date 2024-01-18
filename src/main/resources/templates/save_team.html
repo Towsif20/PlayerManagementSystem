@@ -14,7 +14,7 @@
     <h2 th:text="${update == null} ? 'Create Team' : 'Update Team'" class="text-center mb-4"></h2>
 
     <!-- Team creation form -->
-    <form action="#" th:action="@{/teams}" th:object="${team}", method="POST">
+    <form action="#" th:action="@{/teams/save}" th:object="${team}", method="POST">
 
         <input type="hidden" th:field="*{id}" />
 
