@@ -40,8 +40,6 @@ public class PlayerService
 
     public Player savePlayer(Player player)
     {
-        player.setCreatedAt(LocalDateTime.now());
-
         return playerRepository.save(player);
     }
 
@@ -88,8 +86,6 @@ public class PlayerService
         player.setDeletedAt(LocalDateTime.now());
 
         playerRepository.save(player);
-
-//        playerRepository.deletePlayerById(id, LocalDateTime.now());
     }
 
     @Transactional

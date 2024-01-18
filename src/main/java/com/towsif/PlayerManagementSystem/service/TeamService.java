@@ -44,8 +44,6 @@ public class TeamService
 
     public Team saveTeam(Team team)
     {
-        team.setCreatedAt(LocalDateTime.now());
-
         return teamRepository.save(team);
     }
 

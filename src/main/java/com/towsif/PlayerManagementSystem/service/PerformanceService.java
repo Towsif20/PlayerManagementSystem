@@ -7,7 +7,6 @@ import com.towsif.PlayerManagementSystem.repository.MatchRepository;
 import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,8 +47,6 @@ public class PerformanceService
                 .orElse(performance);
 
         performance.setId(performanceFromDB.getId());
-
-        performance.setCreatedAt(LocalDateTime.now());
 
         performance.setMatch(match);
         performance.setPlayer(player);

@@ -46,8 +46,6 @@ public class MatchService
         Team awayTeam = teamRepository.findTeamByIdAndDeletedFalse(awayTeamId)
                 .orElseThrow(() -> new EntityNotFoundException("Team Not Found with id " + awayTeamId));
 
-        match.setCreatedAt(LocalDateTime.now());
-
         match.setHomeTeam(homeTeam);
         match.setAwayTeam(awayTeam);
 

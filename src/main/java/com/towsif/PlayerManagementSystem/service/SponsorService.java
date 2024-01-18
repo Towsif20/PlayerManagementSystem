@@ -24,8 +24,6 @@ public class SponsorService
 
     public Sponsor saveSponsor(Sponsor sponsor)
     {
-        sponsor.setCreatedAt(LocalDateTime.now());
-
         return sponsorRepository.save(sponsor);
     }
 
