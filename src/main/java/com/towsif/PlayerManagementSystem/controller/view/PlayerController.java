@@ -41,7 +41,6 @@ public class PlayerController
     {
         if (bindingResult.hasErrors())
         {
-            System.out.println(bindingResult.getAllErrors());
             return "save_player";
         }
 
@@ -67,7 +66,7 @@ public class PlayerController
     }
 
     @GetMapping("/{id}")
-    public String showPlayerById(@PathVariable("id") Long id, Model model)
+    public String showPlayerById(@PathVariable Long id, Model model)
     {
         Player player = playerService.findPlayerById(id);
 
@@ -77,7 +76,7 @@ public class PlayerController
     }
 
     @GetMapping("/{id}/update")
-    public String showUpdateForm(@PathVariable("id") Long id, Model model)
+    public String showUpdateForm(@PathVariable Long id, Model model)
     {
         Player player = playerService.findPlayerById(id);
         List<Team> teams = teamService.findAll();
@@ -90,7 +89,7 @@ public class PlayerController
     }
 
     @GetMapping("/{id}/delete")
-    public String deletePlayer(@PathVariable("id") Long id, Model model)
+    public String deletePlayer(@PathVariable Long id, Model model)
     {
         playerService.deletePlayerById(id);
 

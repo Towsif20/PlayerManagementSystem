@@ -26,6 +26,24 @@ public interface MatchRepository extends JpaRepository<Match, Long>
     )
     List<Player> findPlayersByMatchId(Long matchId);
 
+    @Query(
+            "SELECT p " +
+                    "FROM Player p JOIN p.matches m " +
+                    "WHERE m.id = :matchId " +
+                    "and p.deleted = false " +
+                    "and p.team.id = m.homeTeam.id"
+    )
+    List<Player> findHomePlayersByMatchId(Long matchId);
+
+    @Query(
+            "SELECT p " +
+                    "FROM Player p JOIN p.matches m " +
+                    "WHERE m.id = :matchId " +
+                    "and p.deleted = false " +
+                    "and p.team.id = m.awayTeam.id"
+    )
+    List<Player> findAwayPlayersByMatchId(Long matchId);
+
     List<Match> findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalse(Long homeTeamId, Long awayTeamId);
     
     List<Match> findMatchByHomeTeamIdAndDeletedFalse(Long teamId);

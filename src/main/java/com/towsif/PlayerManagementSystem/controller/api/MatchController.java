@@ -49,7 +49,7 @@ public class MatchController
                                       @RequestParam(defaultValue = "id") String sortBy,
                                       @RequestParam(defaultValue = "asc") String sortOrder)
     {
-        return matchService.findAllMatches(page, size, sortBy, sortOrder);
+        return matchService.findAllMatches(page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/{id}")

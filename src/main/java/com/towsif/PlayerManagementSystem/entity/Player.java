@@ -19,7 +19,7 @@ public class Player implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Player Name cannot be empty")
+    @NotBlank
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

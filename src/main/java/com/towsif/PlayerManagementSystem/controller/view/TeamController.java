@@ -30,7 +30,6 @@ public class TeamController
     {
         if (bindingResult.hasErrors())
         {
-            System.out.println(bindingResult.getAllErrors());
             return "save_team";
         }
 
@@ -50,7 +49,7 @@ public class TeamController
     }
 
     @GetMapping("/{id}/update")
-    public String showUpdateForm(@PathVariable("id") Long id, Model model)
+    public String showUpdateForm(@PathVariable Long id, Model model)
     {
         Team team = teamService.findTeamById(id);
 
@@ -94,7 +93,7 @@ public class TeamController
     }
 
     @GetMapping("/{id}")
-    public String showTeamById(@PathVariable("id") Long id, Model model)
+    public String showTeamById(@PathVariable Long id, Model model)
     {
         Team team = teamService.findTeamById(id);
 
@@ -104,7 +103,7 @@ public class TeamController
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteTeam(@PathVariable("id") Long id, Model model)
+    public String deleteTeam(@PathVariable Long id, Model model)
     {
         teamService.deleteTeamById(id);
 

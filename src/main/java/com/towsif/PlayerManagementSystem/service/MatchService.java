@@ -9,9 +9,12 @@ import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import com.towsif.PlayerManagementSystem.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,11 +55,16 @@ public class MatchService
         return matchRepository.save(match);
     }
 
-    public List<Match> findAllMatches(int page, int size, String sortBy, String sortOrder)
+    public void saveMatch(Match match)
+    {
+        matchRepository.save(match);
+    }
+
+    public Page<Match> findAllMatches(int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return matchRepository.findMatchByDeletedFalse(pageable).getContent();
+        return matchRepository.findMatchByDeletedFalse(pageable);
     }
 
     public Match findMatchById(Long id)
@@ -94,6 +102,18 @@ public class MatchService
     public List<Player> findPlayersByMatchId(Long matchId)
     {
         return matchRepository.findPlayersByMatchId(matchId);
+    }
+
+    @GetMapping("/{id}")
+    public List<Player> findHomeTeamPlayers(@PathVariable Long id)
+    {
+        return matchRepository.findHomePlayersByMatchId(id);
+    }
+
+    @GetMapping("/{id}")
+    public List<Player> findAwayTeamPlayers(@PathVariable Long id)
+    {
+        return matchRepository.findAwayPlayersByMatchId(id);
     }
 
     public void addPlayersToMatch(Long matchId, Map<String, List<Integer>> playerIdsMap)

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Matches</title>
+<!--    <link rel="stylesheet" href="../static/bootstrap.min.css">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="row m-4">
+        <div class="col-9">
+            <h1>All Matches List</h1>
+        </div>
+        <div class="col-3 text-end">
+            <a th:href="@{/matches/create}" class="btn btn-info">CREATE MATCH</a>
+        </div>
+    </div>
+
+    <div class="m-4">
+        <table class="table p-4">
+            <thead>
+            <tr>
+                <th>
+                    <div class="row align-items-center">
+                        <div class="col text-left">Matches</div>
+                        <div class="col-auto">
+                            Sort By Date
+                        </div>
+                        <div class="col-auto">
+                            <a th:href="@{''(sortBy=date, sortOrder=asc)}" class="btn">&uarr;</a>
+                            <a th:href="@{''(sortBy=date, sortOrder=desc)}" class="btn">&darr;</a>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Iterate over the list of Matches and display each row -->
+            <tr th:each="match : ${matchPage.content}">
+                <td>
+                    <div class="col-md-4">
+                        <p class="card-title text-primary" th:text="${match.matchType}"></p>
+                        <strong><p class="mb-2" th:text="${#temporals.format(match.date, 'yyyy-MM-dd')}"></p></strong>
+                        <strong>
+                            <p class="mb-2">
+                                <a th:text="${match.homeTeam.name}"
+                                   th:href="@{/teams/{id}(id = ${match.homeTeam.id})}"></a>
+
+                                vs
+
+                                <a th:text="${match.awayTeam.name}"
+                                   th:href="@{/teams/{id}(id = ${match.awayTeam.id})}"></a>
+                            </p>
+                        </strong>
+                        <p><a th:href="@{/matches/{id}(id=${match.id})}">View Details</a></p>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${matchPage.totalPages > 1}" class="text-center m-2">
+        <span th:each="pageNumber: ${#numbers.sequence(0, matchPage.totalPages - 1)}">
+            <a th:href="@{''(size=${matchPage.size}, page=${pageNumber}, sortBy=${sortBy}, sortOrder=${sortOrder})}"
+               class="btn"
+               th:classappend="${pageNumber==matchPage.number} ? 'page-item active'"
+               th:text=${pageNumber}></a>
+        </span>
+        <p>page</p>
+    </div>
+
+</body>
+</html>
