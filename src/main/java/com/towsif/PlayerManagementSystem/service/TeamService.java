@@ -133,19 +133,25 @@ public class TeamService
         teamRepository.save(team);
     }
 
-    public List<Match> findMatchesByTeamId(Long teamId)
+    public Page<Match> findMatchesByTeamId(Long teamId, int page, int size, String sortBy, String sortOrder)
     {
-        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalse(teamId, teamId);
+        Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
+
+        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalse(teamId, teamId, pageable);
     }
 
-    public List<Match> findMatchesByHomeTeamId(Long teamId)
+    public Page<Match> findMatchesByHomeTeamId(Long teamId, int page, int size, String sortBy, String sortOrder)
     {
-        return matchRepository.findMatchByHomeTeamIdAndDeletedFalse(teamId);
+        Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
+
+        return matchRepository.findMatchByHomeTeamIdAndDeletedFalse(teamId, pageable);
     }
 
-    public List<Match> findMatchesByAwayTeamId(Long teamId)
+    public Page<Match> findMatchesByAwayTeamId(Long teamId, int page, int size, String sortBy, String sortOrder)
     {
-        return matchRepository.findMatchByAwayTeamIdAndDeletedFalse(teamId);
+        Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
+
+        return matchRepository.findMatchByAwayTeamIdAndDeletedFalse(teamId, pageable);
     }
 
     public void addSponsorToTeam(Long teamId, Long sponsorId)

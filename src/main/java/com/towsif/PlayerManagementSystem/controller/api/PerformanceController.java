@@ -37,7 +37,7 @@ public class PerformanceController
                                                  @RequestParam(defaultValue = "id") String sortBy,
                                                  @RequestParam(defaultValue = "asc") String sortOrder)
     {
-        return performanceService.findAllPerformances(page, size, sortBy, sortOrder);
+        return performanceService.findAllPerformances(page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/{id}")
@@ -80,7 +80,7 @@ public class PerformanceController
                                                       @RequestParam(defaultValue = "id") String sortBy,
                                                       @RequestParam(defaultValue = "asc") String sortOrder)
     {
-        return performanceService.findPerformanceByMatchId(id, page, size, sortBy, sortOrder);
+        return performanceService.findPerformanceByMatchId(id, page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/players/{playerId}")
@@ -90,6 +90,6 @@ public class PerformanceController
                                                        @RequestParam(defaultValue = "id") String sortBy,
                                                        @RequestParam(defaultValue = "asc") String sortOrder)
     {
-        return performanceService.findPerformanceByPlayerId(id, page, size, sortBy, sortOrder);
+        return performanceService.findPerformanceByPlayerId(id, page, size, sortBy, sortOrder).getContent();
     }
 }

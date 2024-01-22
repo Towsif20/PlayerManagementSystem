@@ -155,4 +155,11 @@ public class MatchService
     {
         return performanceRepository.findTotalRunsInAMatchByTeamId(matchId, teamId);
     }
+
+    public Page<Match> findAllMatchesByTeam(Long id, int page, int size, String sortBy, String sortOrder)
+    {
+        Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
+
+        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalse(id, id, pageable);
+    }
 }

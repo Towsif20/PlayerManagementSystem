@@ -1,8 +1,10 @@
 package com.towsif.PlayerManagementSystem.controller.view;
 
 import com.towsif.PlayerManagementSystem.dto.TeamWithPlayerCountDTO;
+import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Team;
+import com.towsif.PlayerManagementSystem.service.MatchService;
 import com.towsif.PlayerManagementSystem.service.PlayerService;
 import com.towsif.PlayerManagementSystem.service.TeamService;
 import jakarta.validation.Valid;
@@ -24,6 +26,9 @@ public class TeamController
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private MatchService matchService;
 
     @PostMapping("/save")
     public String saveTeam(@Valid @ModelAttribute Team team, BindingResult bindingResult)
@@ -90,6 +95,23 @@ public class TeamController
         model.addAttribute("sortOrder", sortOrder);
 
         return "players";
+    }
+
+    @GetMapping("{id}/matches")
+    public String showMatches(@PathVariable Long id,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size,
+                              @RequestParam(defaultValue = "date") String sortBy,
+                              @RequestParam(defaultValue = "desc") String sortOrder,
+                              Model model)
+    {
+        Page<Match> matchPage = matchService.findAllMatchesByTeam(id, page, size, sortBy, sortOrder);
+
+        model.addAttribute("matchPage", matchPage);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortOrder", sortOrder);
+
+        return "matches";
     }
 
     @GetMapping("/{id}")

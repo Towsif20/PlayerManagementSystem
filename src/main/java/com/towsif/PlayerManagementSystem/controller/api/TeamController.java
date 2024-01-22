@@ -108,21 +108,33 @@ public class TeamController
     }
 
     @GetMapping("/{teamId}/matches")
-    public List<Match> findMatchesByTeamId(@PathVariable("teamId") Long teamId)
+    public List<Match> findMatchesByTeamId(@PathVariable("teamId") Long teamId,
+                                           @RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size,
+                                           @RequestParam(defaultValue = "date") String sortBy,
+                                           @RequestParam(defaultValue = "desc") String sortOrder)
     {
-        return teamService.findMatchesByTeamId(teamId);
+        return teamService.findMatchesByTeamId(teamId, page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/{teamId}/matches/home")
-    public List<Match> findMatchesByHomeTeamId(@PathVariable("teamId") Long teamId)
+    public List<Match> findMatchesByHomeTeamId(@PathVariable("teamId") Long teamId,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size,
+                                               @RequestParam(defaultValue = "date") String sortBy,
+                                               @RequestParam(defaultValue = "desc") String sortOrder)
     {
-        return teamService.findMatchesByHomeTeamId(teamId);
+        return teamService.findMatchesByHomeTeamId(teamId, page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/{teamId}/matches/away")
-    public List<Match> findMatchesByAwayTeamId(@PathVariable("teamId") Long teamId)
+    public List<Match> findMatchesByAwayTeamId(@PathVariable("teamId") Long teamId,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size,
+                                               @RequestParam(defaultValue = "date") String sortBy,
+                                               @RequestParam(defaultValue = "desc") String sortOrder)
     {
-        return teamService.findMatchesByAwayTeamId(teamId);
+        return teamService.findMatchesByAwayTeamId(teamId, page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/{teamId}/sponsors")

@@ -36,4 +36,6 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
             "WHERE (match.homeTeam.id = :teamId OR match.awayTeam.id = :teamId) " +
             "AND match.id = :matchId")
     Long findTotalRunsInAMatchByTeamId(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
+
+    Page<Performance> findPerformanceByPlayerTeamIdAndDeletedFalse(Long teamId, Pageable pageable);
 }

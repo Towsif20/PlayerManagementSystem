@@ -8,6 +8,7 @@ import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,11 +55,11 @@ public class PerformanceService
         return performanceRepository.save(performance);
     }
 
-    public List<Performance> findAllPerformances(int page, int size, String sortBy, String sortOrder)
+    public Page<Performance> findAllPerformances(int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return performanceRepository.findPerformanceByDeletedFalse(pageable).getContent();
+        return performanceRepository.findPerformanceByDeletedFalse(pageable);
     }
 
     public Performance findPerformanceById(Long id)
@@ -98,17 +99,24 @@ public class PerformanceService
                 .orElseThrow(() -> new EntityNotFoundException("No performance found in match " + matchId + " for player " + playerId));
     }
 
-    public List<Performance> findPerformanceByMatchId(Long id, int page, int size, String sortBy, String sortOrder)
+    public Page<Performance> findPerformanceByMatchId(Long id, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return performanceRepository.findPerformanceByMatchIdAndDeletedFalse(id, pageable).getContent();
+        return performanceRepository.findPerformanceByMatchIdAndDeletedFalse(id, pageable);
     }
 
-    public List<Performance> findPerformanceByPlayerId(Long id, int page, int size, String sortBy, String sortOrder)
+    public Page<Performance> findPerformanceByPlayerId(Long id, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return performanceRepository.findPerformanceByPlayerIdAndDeletedFalse(id, pageable).getContent();
+        return performanceRepository.findPerformanceByPlayerIdAndDeletedFalse(id, pageable);
+    }
+
+    public Page<Performance> findPerformanceByTeamId(Long teamId, int page, int size, String sortBy, String sortOrder)
+    {
+        Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
+
+        return performanceRepository.findPerformanceByPlayerTeamIdAndDeletedFalse(teamId, pageable);
     }
 }
