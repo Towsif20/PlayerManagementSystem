@@ -8,6 +8,7 @@ import com.towsif.PlayerManagementSystem.service.PlayerService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,9 +87,14 @@ public class PlayerController
     }
 
     @GetMapping("/{id}/matches")
-    public List<Match> findMatchesByPlayerId(@PathVariable("id") Long id)
+    public List<Match> findMatchesByPlayerId(@PathVariable("id") Long id,
+                                             @RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size,
+                                             @RequestParam(defaultValue = "id") String sortBy,
+                                             @RequestParam(defaultValue = "asc") String sortOrder,
+                                             Model model)
     {
-        return playerService.findMatchesByPlayerId(id);
+        return playerService.findMatchesByPlayerId(id, page, size, sortBy, sortOrder).getContent();
     }
 
     @GetMapping("/{id}/team")

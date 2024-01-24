@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MatchService
@@ -101,19 +98,37 @@ public class MatchService
 
     public List<Player> findPlayersByMatchId(Long matchId)
     {
-        return matchRepository.findPlayersByMatchId(matchId);
+        Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
+                .orElseThrow(() -> new EntityNotFoundException("No match found with " + matchId));
+
+        return match.getPlayers().stream()
+                .filter(player -> !player.isDeleted())
+                .distinct()
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public List<Player> findHomeTeamPlayers(@PathVariable Long id)
+    public List<Player> findHomeTeamPlayers(@PathVariable Long matchId)
     {
-        return matchRepository.findHomePlayersByMatchId(id);
+        Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
+                .orElseThrow(() -> new EntityNotFoundException("No match found with " + matchId));
+
+        return match.getPlayers().stream()
+                .filter(player -> Objects.equals(player.getTeam().getId(), match.getHomeTeam().getId()) && !player.isDeleted())
+                .distinct()
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public List<Player> findAwayTeamPlayers(@PathVariable Long id)
+    public List<Player> findAwayTeamPlayers(@PathVariable Long matchId)
     {
-        return matchRepository.findAwayPlayersByMatchId(id);
+        Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
+                .orElseThrow(() -> new EntityNotFoundException("No match found with " + matchId));
+
+        return match.getPlayers().stream()
+                .filter(player -> Objects.equals(player.getTeam().getId(), match.getAwayTeam().getId()) && !player.isDeleted())
+                .distinct()
+                .toList();
     }
 
     public void addPlayersToMatch(Long matchId, Map<String, List<Integer>> playerIdsMap)
@@ -121,8 +136,8 @@ public class MatchService
         Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
                 .orElseThrow(() -> new EntityNotFoundException("No match found with " + matchId));
 
-        List<Player> homePLayers = playerRepository.findPlayerByTeamIdAndDeletedFalse(match.getHomeTeam().getId());
-        List<Player> awayPLayers = playerRepository.findPlayerByTeamIdAndDeletedFalse(match.getAwayTeam().getId());
+        List<Player> homePLayers = this.findHomeTeamPlayers(matchId); //playerRepository.findPlayerByTeamIdAndDeletedFalse(match.getHomeTeam().getId());
+        List<Player> awayPLayers = this.findAwayTeamPlayers(matchId); //playerRepository.findPlayerByTeamIdAndDeletedFalse(match.getAwayTeam().getId());
 
         List<Long> playerIds = new ArrayList<>();
         playerIdsMap.get("playerIds").forEach(id -> playerIds.add(Long.valueOf(id)));
@@ -133,7 +148,7 @@ public class MatchService
                         .filter(player -> homePLayers.contains(player) || awayPLayers.contains(player))
                         .toList();
 
-        players.forEach(player -> player.getMatches().add(match));
+        match.getPlayers().addAll(players);
 
         matchRepository.save(match);
     }
@@ -160,6 +175,6 @@ public class MatchService
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalse(id, id, pageable);
+        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalseAndHomeTeamDeletedFalseAndAwayTeamDeletedFalse(id, id, pageable);
     }
 }

@@ -1,5 +1,6 @@
 package com.towsif.PlayerManagementSystem.repository;
 
+import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,13 +22,16 @@ public interface PlayerRepository extends JpaRepository<Player, Long>
 
     Optional<Player> findPlayerByIdAndDeletedFalse(Long id);
 
+    List<Player> findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(Long id);
 
-    @Transactional
-    @Modifying
-    @Query(value = "update Player set deleted = true, deleted_at = :deletedAt where id = :id", nativeQuery = true)
-    void deletePlayerById(@Param("id") Long id, @Param("deletedAt") LocalDateTime deletedAt);
+    Page<Player> findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(Pageable pageable, Long id);
 
-    List<Player> findPlayerByTeamIdAndDeletedFalse(Long id);
-
-    Page<Player> findPlayerByTeamIdAndDeletedFalse(Pageable pageable, Long id);
+    @Query(
+            "SELECT m " +
+                    "FROM Match m JOIN m.players p " +
+                    "WHERE p.id = :id " +
+                    "AND m.deleted = false " +
+                    "AND p.deleted = false"
+    )
+    Page<Match> findMatchesByPlayerId(Long id, Pageable pageable);
 }

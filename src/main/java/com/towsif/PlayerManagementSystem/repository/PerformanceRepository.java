@@ -17,16 +17,28 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
 
     Optional<Performance> findPerformanceByIdAndDeletedFalse(Long id);
 
-    Optional<Performance> findPerformanceByMatchIdAndPlayerIdAndDeletedFalse(Long matchId, Long playerId);
+    Optional<Performance> findPerformanceByMatchIdAndPlayerIdAndDeletedFalseAndPlayerDeletedFalseAndMatchDeletedFalse(Long matchId, Long playerId);
 
-    Page<Performance> findPerformanceByMatchIdAndDeletedFalse(Long id, Pageable pageable);
+    Page<Performance> findPerformanceByMatchIdAndDeletedFalseAndMatchDeletedFalse(Long id, Pageable pageable);
 
-    Page<Performance> findPerformanceByPlayerIdAndDeletedFalse(Long id, Pageable pageable);
+    Page<Performance> findPerformanceByPlayerIdAndDeletedFalseAndPlayerDeletedFalse(Long id, Pageable pageable);
 
-    @Query("SELECT SUM(p.runs) FROM Performance p WHERE p.player.id=:id")
+    @Query(
+            "SELECT SUM(p.runs) " +
+                    "FROM Performance p " +
+                    "WHERE p.player.id=:id " +
+                    "AND p.deleted = false " +
+                    "And p.player.deleted = false"
+    )
     Long findRunsByPlayerId(Long id);
 
-    @Query("SELECT SUM(p.runs) FROM Performance p WHERE p.match.id=:id")
+    @Query(
+            "SELECT SUM(p.runs) " +
+                    "FROM Performance p " +
+                    "WHERE p.match.id=:id " +
+                    "AND p.deleted = false " +
+                    "And p.match.deleted = false"
+    )
     Long findRunsByMatchId(Long id);
 
     @Query("SELECT SUM(performance.runs) " +
@@ -34,7 +46,11 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
             "JOIN performance.player player " +
             "JOIN performance.match match " +
             "WHERE (match.homeTeam.id = :teamId OR match.awayTeam.id = :teamId) " +
-            "AND match.id = :matchId")
+            "AND match.id = :matchId " +
+            "AND performance.deleted = false " +
+            "And performance.player.deleted = false " +
+            "And performance.match.deleted = false"
+    )
     Long findTotalRunsInAMatchByTeamId(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
 
     Page<Performance> findPerformanceByPlayerTeamIdAndDeletedFalse(Long teamId, Pageable pageable);

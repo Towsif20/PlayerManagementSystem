@@ -1,5 +1,6 @@
 package com.towsif.PlayerManagementSystem.controller.view;
 
+import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.service.PlayerService;
@@ -73,6 +74,23 @@ public class PlayerController
         model.addAttribute("player", player);
 
         return "player";
+    }
+
+    @GetMapping("/{id}/matches")
+    public String showMatchesByPlayerId(@PathVariable Long id,
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int size,
+                                        @RequestParam(defaultValue = "id") String sortBy,
+                                        @RequestParam(defaultValue = "asc") String sortOrder,
+                                        Model model)
+    {
+        Page<Match> matchPage = playerService.findMatchesByPlayerId(id, page, size, sortBy, sortOrder);
+
+        model.addAttribute("matchPage", matchPage);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortOrder", sortOrder);
+
+        return "matches";
     }
 
     @GetMapping("/{id}/update")

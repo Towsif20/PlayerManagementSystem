@@ -29,13 +29,13 @@
                     <strong><p class="mb-2" th:text="${#temporals.format(match.date, 'yyyy-MM-dd')}"></p></strong>
                     <strong>
                         <p class="mb-2">
-                            <a th:href="@{/teams/{id}(id=match.homeTeam.id)}" th:text="${match.homeTeam.name}"></a>
+                            <a th:href="@{/teams/{id}(id=${match.homeTeam.id})}" th:text="${match.homeTeam.name}"></a>
                         </p>
                         <p class="mb-2">
-                            <a th:href="@{/teams/{id}(id=match.awayTeam.id)}" th:text="${match.awayTeam.name}"></a>
+                            <a th:href="@{/teams/{id}(id=${match.awayTeam.id})}" th:text="${match.awayTeam.name}"></a>
                         </p>
                         <p class="mb-2">
-                            <a th:text="'Winner Team'"></a>
+                            <a th:text="${winnerTeam == null} ? 'None' : ${winnerTeam.name}"></a>
                         </p>
                     </strong>
                 </div>

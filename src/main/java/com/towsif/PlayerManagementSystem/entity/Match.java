@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Match implements Serializable
@@ -59,6 +60,17 @@ public class Match implements Serializable
     )
     @JsonIgnore
     private Team awayTeam;
+
+    @ManyToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinTable(
+            name = "player_match",
+            joinColumns = @JoinColumn(name = "match_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
+    )
+    @JsonIgnore
+    List<Player> players;
 
     public Long getId()
     {
@@ -168,6 +180,16 @@ public class Match implements Serializable
     public void setAwayTeam(Team awayTeam)
     {
         this.awayTeam = awayTeam;
+    }
+
+    public List<Player> getPlayers()
+    {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players)
+    {
+        this.players = players;
     }
 
     @Override

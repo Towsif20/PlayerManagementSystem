@@ -51,7 +51,8 @@ public class PlayerService
         Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
                 .orElseThrow(() -> new EntityNotFoundException("No match Found with id " + matchId));
 
-        player.getMatches().add(match);
+//        player.getMatches().add(match);
+        match.getPlayers().add(player);
 
         playerRepository.save(player);
     }
@@ -67,7 +68,7 @@ public class PlayerService
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return playerRepository.findPlayerByTeamIdAndDeletedFalse(pageable, teamId);
+        return playerRepository.findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(pageable, teamId);
     }
 
     public Player findPlayerById(Long id)
@@ -102,12 +103,11 @@ public class PlayerService
     }
 
 
-    public List<Match> findMatchesByPlayerId(Long id)
+    public Page<Match> findMatchesByPlayerId(Long id, int page, int size, String sortBy, String sortOrder)
     {
-        Player player = playerRepository.findPlayerByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + id));
+        Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return player.getMatches();
+        return playerRepository.findMatchesByPlayerId(id, pageable);
     }
 
     public Team findTeamById(Long id)

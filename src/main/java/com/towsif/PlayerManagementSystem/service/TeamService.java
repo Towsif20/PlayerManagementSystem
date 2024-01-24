@@ -115,7 +115,7 @@ public class TeamService
 
     public List<Player> findPlayers(Long id)
     {
-        return playerRepository.findPlayerByTeamIdAndDeletedFalse(id);
+        return playerRepository.findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(id);
     }
 
     public void addPlayersToTeam(Long teamId, Map<String, List<Integer>> playerIdsMap)
@@ -137,21 +137,21 @@ public class TeamService
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalse(teamId, teamId, pageable);
+        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalseAndHomeTeamDeletedFalseAndAwayTeamDeletedFalse(teamId, teamId, pageable);
     }
 
     public Page<Match> findMatchesByHomeTeamId(Long teamId, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return matchRepository.findMatchByHomeTeamIdAndDeletedFalse(teamId, pageable);
+        return matchRepository.findMatchByHomeTeamIdAndDeletedFalseAndHomeTeamDeletedFalse(teamId, pageable);
     }
 
     public Page<Match> findMatchesByAwayTeamId(Long teamId, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return matchRepository.findMatchByAwayTeamIdAndDeletedFalse(teamId, pageable);
+        return matchRepository.findMatchByAwayTeamIdAndDeletedFalseAndAwayTeamDeletedFalse(teamId, pageable);
     }
 
     public void addSponsorToTeam(Long teamId, Long sponsorId)

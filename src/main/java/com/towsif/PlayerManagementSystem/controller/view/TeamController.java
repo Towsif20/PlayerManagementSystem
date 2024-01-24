@@ -97,6 +97,12 @@ public class TeamController
         return "players";
     }
 
+    @GetMapping("/{id}/playersResponseBody")
+    public @ResponseBody List<Player> getPlayers(@PathVariable Long id, Model model)
+    {
+        return teamService.findPlayers(id);
+    }
+
     @GetMapping("{id}/matches")
     public String showMatches(@PathVariable Long id,
                               @RequestParam(defaultValue = "0") int page,

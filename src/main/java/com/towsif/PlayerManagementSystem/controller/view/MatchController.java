@@ -101,4 +101,12 @@ public class MatchController
 
         return "match_players";
     }
+
+    @GetMapping("/{id}/delete")
+    public String deleteMatchById(@PathVariable Long id, Model model)
+    {
+        matchService.deleteMatchById(id);
+
+        return "redirect:/matches";
+    }
 }

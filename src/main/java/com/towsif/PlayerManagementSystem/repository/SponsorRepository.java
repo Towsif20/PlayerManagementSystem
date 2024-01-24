@@ -23,14 +23,18 @@ public interface SponsorRepository extends JpaRepository<Sponsor, Long>
     @Query(
             "SELECT p " +
                     "FROM Player p JOIN p.sponsors s " +
-                    "WHERE s.id = :sponsorId"
+                    "WHERE s.id = :sponsorId " +
+                    "AND p.deleted = false " +
+                    "AND s.deleted = false"
     )
     List<Player> findPlayersBySponsorId(Long sponsorId);
 
     @Query(
             "SELECT t " +
                     "FROM Team t JOIN t.sponsors s " +
-                    "WHERE s.id = :sponsorId"
+                    "WHERE s.id = :sponsorId " +
+                    "AND t.deleted = false " +
+                    "AND s.deleted = false"
     )
     List<Team> findTeamsBySponsorId(Long sponsorId);
 }

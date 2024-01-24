@@ -49,9 +49,7 @@ public class Player implements Serializable
     @JsonIgnore
     private Team team;
 
-    @ManyToMany(
-            cascade = CascadeType.ALL
-    )
+    @ManyToMany(mappedBy = "players")
     @JsonIgnore
     private List<Match> matches;
 
