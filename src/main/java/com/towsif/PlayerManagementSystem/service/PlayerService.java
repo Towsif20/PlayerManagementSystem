@@ -9,7 +9,6 @@ import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,21 +21,24 @@ import java.util.List;
 @Transactional
 public class PlayerService
 {
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private SponsorRepository sponsorRepository;
+    private final SponsorRepository sponsorRepository;
 
-    @Autowired
-    private PerformanceRepository performanceRepository;
+    private final PerformanceRepository performanceRepository;
 
-    @Autowired
-    private PaginationAndSortingService paginationAndSortingService;
+    private final PaginationAndSortingService paginationAndSortingService;
 
+    public PlayerService(PlayerRepository playerRepository, MatchRepository matchRepository, SponsorRepository sponsorRepository, PerformanceRepository performanceRepository, PaginationAndSortingService paginationAndSortingService)
+    {
+        this.playerRepository = playerRepository;
+        this.matchRepository = matchRepository;
+        this.sponsorRepository = sponsorRepository;
+        this.performanceRepository = performanceRepository;
+        this.paginationAndSortingService = paginationAndSortingService;
+    }
 
     public Player savePlayer(Player player)
     {

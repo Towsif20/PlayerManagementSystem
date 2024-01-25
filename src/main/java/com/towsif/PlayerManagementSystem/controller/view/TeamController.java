@@ -8,7 +8,6 @@ import com.towsif.PlayerManagementSystem.service.MatchService;
 import com.towsif.PlayerManagementSystem.service.PlayerService;
 import com.towsif.PlayerManagementSystem.service.TeamService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,14 +20,18 @@ import java.util.List;
 @RequestMapping("/teams")
 public class TeamController
 {
-    @Autowired
-    private TeamService teamService;
+    private final TeamService teamService;
 
-    @Autowired
-    private PlayerService playerService;
+    private final PlayerService playerService;
 
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
+
+    public TeamController(TeamService teamService, PlayerService playerService, MatchService matchService)
+    {
+        this.teamService = teamService;
+        this.playerService = playerService;
+        this.matchService = matchService;
+    }
 
     @PostMapping("/save")
     public String saveTeam(@Valid @ModelAttribute Team team, BindingResult bindingResult)

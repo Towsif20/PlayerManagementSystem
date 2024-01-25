@@ -6,7 +6,6 @@ import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.service.MatchService;
 import com.towsif.PlayerManagementSystem.service.TeamService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +18,15 @@ import java.util.List;
 @RequestMapping("/matches")
 public class MatchController
 {
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
-    @Autowired
-    private TeamService teamService;
+    private final TeamService teamService;
+
+    public MatchController(MatchService matchService, TeamService teamService)
+    {
+        this.matchService = matchService;
+        this.teamService = teamService;
+    }
 
     @GetMapping("/create")
     public String showCreateMatch(Model model)
@@ -42,9 +45,14 @@ public class MatchController
     {
         Match match = matchService.findMatchById(id);
         List<Team> teams = teamService.findAll();
+        List<Player> homePlayers = teamService.findPlayers(match.getHomeTeam().getId());
+        List<Player> awayPlayers = teamService.findPlayers(match.getAwayTeam().getId());
 
         model.addAttribute("match", match);
         model.addAttribute("teams", teams);
+        model.addAttribute("availableHomePlayers", homePlayers);
+        model.addAttribute("availableAwayPlayers", awayPlayers);
+        model.addAttribute("update", true);
 
         return "save_match";
     }

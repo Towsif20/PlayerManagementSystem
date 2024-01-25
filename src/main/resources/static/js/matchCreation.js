@@ -1,7 +1,40 @@
-function updatePlayers()
+var selectedPlayersHidden = document.getElementById("selectedPlayersHidden");
+var selectedHomePlayersItemList = document.getElementById("selectedHomePlayersList");
+var selectedAwayPlayersItemList = document.getElementById("selectedAwayPlayersList");
+
+var homePlayers = []
+var awayPlayers = []
+
+function selectPlayer(id)
 {
-    var selectedTeamId = document.getElementById("homeTeam").value;
-    var availablePlayersList = document.getElementById("availablePlayersList");
+    selectedPlayersHidden.value += id + ','
+}
+
+function updateSelectedPlayers()
+{
+    selectedPlayersHidden.value = ''
+
+    homePlayers.forEach(selectPlayer)
+    awayPlayers.forEach(selectPlayer)
+
+    selectedPlayersHidden.value = selectedPlayersHidden.value.replace(/,$/, '');
+}
+
+function updatePlayers(team)
+{
+    var selectedTeamId = document.getElementById(team).value;
+    var availablePlayersList = []
+
+    if(team == 'homeTeam')
+    {
+        availablePlayersList = document.getElementById("availableHomePlayersList");
+        homePlayers = []
+    }
+    else
+    {
+        availablePlayersList = document.getElementById("availableAwayPlayersList");
+        awayPlayers = []
+    }
 
     // Clear the current list of available players
     availablePlayersList.innerHTML = '';
@@ -22,19 +55,14 @@ function updatePlayers()
     });
 }
 
-
-// Function to add all selected players to the selected players list
-function addAllPlayers()
+function addSelectedPlayersToList(checkboxSelector, selectedPlayersItemList, selectedPlayers)
 {
-    var selectedPlayersList = document.getElementById("selectedPlayersList");
-    var selectedPlayersHidden = document.getElementById("selectedPlayersHidden");
-
-    // Clear previous selected player IDs
-    selectedPlayersHidden.value = '';
-
-    // Find all checkboxes in the available players list
-    $('#availablePlayersList .playerCheckbox:checked').each(function ()
+    while (selectedPlayersItemList.firstChild)
     {
+        selectedPlayersItemList.removeChild(selectedPlayersItemList.firstChild);
+    }
+
+    $(checkboxSelector + ' .playerCheckbox:checked').each(function () {
         var playerId = $(this).val();
         var playerName = $(this).closest('li').find('span').text();
 
@@ -42,22 +70,54 @@ function addAllPlayers()
         var newPlayerItem = document.createElement("li");
         newPlayerItem.innerHTML = '<span>' + playerName + '</span>' +
         '<input type="hidden" name="selectedPlayersIds" value="' + playerId + '">' +
-        '<button type="button" onclick="removeSelectedPlayer(this)">Remove</button>';
+        '<button type="button" data-player-id="' + playerId + '" onclick="removeSelectedPlayer(this)">Remove</button>';
 
         // Append the new player item to the selected players list
-        selectedPlayersList.appendChild(newPlayerItem);
+        selectedPlayersItemList.appendChild(newPlayerItem);
 
-        // Update the hidden input field with selected player IDs
-        selectedPlayersHidden.value += playerId + ',';
+        selectedPlayers.push(playerId)
     });
+}
 
-    // Remove the trailing comma
-    selectedPlayersHidden.value = selectedPlayersHidden.value.replace(/,$/, '');
+
+function addHomePlayers()
+{
+    addSelectedPlayersToList('#availableHomePlayersList', selectedHomePlayersItemList, homePlayers);
+
+    updateSelectedPlayers();
+}
+
+function addAwayPlayers()
+{
+    addSelectedPlayersToList('#availableAwayPlayersList', selectedAwayPlayersItemList, awayPlayers);
+
+    updateSelectedPlayers();
 }
 
 
 function removeSelectedPlayer(button)
 {
     var playerItem = button.parentElement;
+    var playerId = button.getAttribute('data-player-id')
+
+    homePlayers = homePlayers.filter(function(item)
+    {
+        return item !== playerId
+    })
+
+    awayPlayers = awayPlayers.filter(function(item)
+    {
+        return item !== playerId
+    })
+
     playerItem.remove();
+
+    updateSelectedPlayers();
 }
+
+document.addEventListener('DOMContentLoaded', function()
+{
+    addHomePlayers();
+    addAwayPlayers();
+    updateSelectedPlayers();
+});

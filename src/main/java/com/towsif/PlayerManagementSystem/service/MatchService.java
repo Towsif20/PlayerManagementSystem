@@ -8,7 +8,6 @@ import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import com.towsif.PlayerManagementSystem.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,21 +21,24 @@ import java.util.*;
 @Service
 public class MatchService
 {
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
 
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
-    @Autowired
-    PerformanceRepository performanceRepository;
+    private final PerformanceRepository performanceRepository;
 
-    @Autowired
-    private PaginationAndSortingService paginationAndSortingService;
+    private final PaginationAndSortingService paginationAndSortingService;
 
+    public MatchService(MatchRepository matchRepository, TeamRepository teamRepository, PlayerRepository playerRepository, PerformanceRepository performanceRepository, PaginationAndSortingService paginationAndSortingService)
+    {
+        this.matchRepository = matchRepository;
+        this.teamRepository = teamRepository;
+        this.playerRepository = playerRepository;
+        this.performanceRepository = performanceRepository;
+        this.paginationAndSortingService = paginationAndSortingService;
+    }
 
     public Match saveMatch(Match match, Long homeTeamId, Long awayTeamId)
     {

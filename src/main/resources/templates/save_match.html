@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Match</title>
+    <title th:text="${update == null} ? 'Create Match' : 'Update Match'"></title>
     <!--    <link rel="stylesheet" href="../static/bootstrap.min.css">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -31,32 +31,58 @@
             <option th:value="'T20'" th:text="T20"></option>
         </select>
 
-        <select id="homeTeam" name="homeTeam" required onchange="updatePlayers('homeTeam')" class="custom-select form-control mb-4" th:field="*{homeTeam}">
+        <select id="homeTeam" name="homeTeam" required onchange="updatePlayers('homeTeam'); addHomePlayers();" class="custom-select form-control mb-4" th:field="*{homeTeam}">
             <option value="0">select home team</option>
             <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
         </select>
 
         <!-- Available Players List -->
-        <label for="availablePlayersList">Available Players:</label>
-        <ul id="availablePlayersList">
+        <label for="availableHomePlayersList">Available Home Players:</label>
+        <ul id="availableHomePlayersList">
             <!-- Populate with available players from your model -->
+            <th:block th:if="${update != null}" th:each="player : ${availableHomePlayers}">
+                <li>
+                    <input type="checkbox" class="playerCheckbox" th:value="${player.id}" th:checked="${match.players.contains(player)}">
+                    <span th:text="${player.name}"></span>
+                </li>
+            </th:block>
         </ul>
 
-        <!-- Add All Players Button -->
-        <button type="button" onclick="addAllPlayers()">Add All</button>
+        <!-- Add All Home Players Button -->
+        <button type="button" onclick="addHomePlayers()">Add Home Players</button>
 
-        <!-- Selected Players List -->
-        <label for="selectedPlayersList">Selected Players:</label>
-        <ul id="selectedPlayersList">
+        <label for="selectedHomePlayersList">Selected Home Players:</label>
+        <ul id="selectedHomePlayersList">
+            <!-- Selected players will be dynamically added here using JavaScript -->
+        </ul>
+
+
+
+
+        <select id="awayTeam" name="awayTeam" required onchange="updatePlayers('awayTeam'); addAwayPlayers();" class="custom-select form-control mb-4" th:field="*{awayTeam}">
+            <option value="0">select away team</option>
+            <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+        </select>
+
+        <label for="availableAwayPlayersList">Available Away Players:</label>
+        <ul id="availableAwayPlayersList">
+            <!-- Populate with available players from your model -->
+            <th:block th:if="${update != null}" th:each="player : ${availableAwayPlayers}">
+                <li>
+                    <input type="checkbox" class="playerCheckbox" th:value="${player.id}" th:checked="${match.players.contains(player)}">
+                    <span th:text="${player.name}"></span>
+                </li>
+            </th:block>
+        </ul>
+
+        <button type="button" onclick="addAwayPlayers()">Add Away Players</button>
+
+        <label for="selectedAwayPlayersList">Selected Away Players:</label>
+        <ul id="selectedAwayPlayersList">
             <!-- Selected players will be dynamically added here using JavaScript -->
         </ul>
 
         <input type="hidden" th:field="*{players}" id="selectedPlayersHidden">
-
-        <select class="custom-select form-control mb-4" th:field="*{awayTeam}">
-            <option value="0">select away team</option>
-            <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
-        </select>
 
         <button type="submit" class="btn btn-info col-2"
         th:text="${update == null} ? Save : Update">
@@ -67,51 +93,7 @@
 <!-- Add Bootstrap JS and Popper.js scripts (required for Bootstrap) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/matchCreation.js}"></script>
-<!-- Your custom JavaScript scripts or links here -->
-<!--<script>-->
-<!--    // JavaScript function to update the list of players based on the selected team-->
-<!--    function updatePlayers(teamId) {-->
-<!--        var selectedTeamId = document.getElementById(teamId).value;-->
-<!--        var playersList = document.getElementById("playersList");-->
 
-<!--        // Clear the current list of players-->
-<!--        playersList.innerHTML = '';-->
-
-<!--        // Fetch the players for the selected team using AJAX-->
-<!--        $.ajax({-->
-<!--            url: '/teams/' + selectedTeamId + '/playersResponseBody',-->
-<!--            type: 'GET',-->
-<!--            success: function(data) {-->
-<!--                // Populate the players in the list-->
-<!--                data.forEach(function(player) {-->
-<!--                    var newPlayerInput = document.createElement("li");-->
-<!--                    newPlayerInput.innerHTML = '<input type="text" name="players" value="' + player.name + '" readonly>' +-->
-<!--                    '<button type="button" onclick="removePlayer(this)">Remove</button>';-->
-<!--                    playersList.appendChild(newPlayerInput);-->
-<!--                });-->
-<!--            }-->
-<!--        });-->
-<!--    }-->
-
-<!--    // JavaScript function to add a new player input field-->
-<!--    function addPlayer() {-->
-<!--        // Add logic to check if the player already exists in the list-->
-<!--        // ...-->
-
-<!--        var playersList = document.getElementById("playersList");-->
-<!--        var newPlayerInput = document.createElement("li");-->
-<!--        newPlayerInput.innerHTML = '<input type="text" name="players" placeholder="Player Name">' +-->
-<!--        '<button type="button" onclick="removePlayer(this)">Remove</button>';-->
-
-<!--        playersList.appendChild(newPlayerInput);-->
-<!--    }-->
-
-<!--    // JavaScript function to remove a player input field-->
-<!--    function removePlayer(button) {-->
-<!--        var playerInput = button.parentElement;-->
-<!--        playerInput.remove();-->
-<!--    }-->
-<!--</script>-->
 
 </body>
 </html>

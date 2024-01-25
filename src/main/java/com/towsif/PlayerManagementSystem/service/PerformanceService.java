@@ -7,7 +7,6 @@ import com.towsif.PlayerManagementSystem.repository.MatchRepository;
 import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,17 +17,21 @@ import java.time.LocalDateTime;
 @Service
 public class PerformanceService
 {
-    @Autowired
-    private PerformanceRepository performanceRepository;
+    private final PerformanceRepository performanceRepository;
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
-    @Autowired
-    PaginationAndSortingService paginationAndSortingService;
+    private final PaginationAndSortingService paginationAndSortingService;
+
+    public PerformanceService(PerformanceRepository performanceRepository, MatchRepository matchRepository, PlayerRepository playerRepository, PaginationAndSortingService paginationAndSortingService)
+    {
+        this.performanceRepository = performanceRepository;
+        this.matchRepository = matchRepository;
+        this.playerRepository = playerRepository;
+        this.paginationAndSortingService = paginationAndSortingService;
+    }
 
     @Transactional
     public Performance savePerformance(Performance performance, Long matchId, Long playerId)

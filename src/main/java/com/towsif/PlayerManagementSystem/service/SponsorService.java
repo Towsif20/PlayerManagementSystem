@@ -5,7 +5,6 @@ import com.towsif.PlayerManagementSystem.entity.Sponsor;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +15,15 @@ import java.util.List;
 @Service
 public class SponsorService
 {
-    @Autowired
-    private SponsorRepository sponsorRepository;
+    private final SponsorRepository sponsorRepository;
 
-    @Autowired
-    PaginationAndSortingService paginationAndSortingService;
+    private final PaginationAndSortingService paginationAndSortingService;
+
+    public SponsorService(SponsorRepository sponsorRepository, PaginationAndSortingService paginationAndSortingService)
+    {
+        this.sponsorRepository = sponsorRepository;
+        this.paginationAndSortingService = paginationAndSortingService;
+    }
 
     public Sponsor saveSponsor(Sponsor sponsor)
     {

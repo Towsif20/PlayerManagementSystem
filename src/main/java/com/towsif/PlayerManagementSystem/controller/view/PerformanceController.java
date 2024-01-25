@@ -2,7 +2,6 @@ package com.towsif.PlayerManagementSystem.controller.view;
 
 import com.towsif.PlayerManagementSystem.entity.Performance;
 import com.towsif.PlayerManagementSystem.service.PerformanceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/performances")
 public class PerformanceController
 {
-    @Autowired
-    PerformanceService performanceService;
+    private final PerformanceService performanceService;
+
+    public PerformanceController(PerformanceService performanceService)
+    {
+        this.performanceService = performanceService;
+    }
 
     @GetMapping
     public String showAllPerformances(@RequestParam(defaultValue = "0") int page,

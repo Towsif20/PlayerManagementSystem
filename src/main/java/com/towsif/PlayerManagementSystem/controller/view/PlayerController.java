@@ -6,7 +6,6 @@ import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.service.PlayerService;
 import com.towsif.PlayerManagementSystem.service.TeamService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +18,15 @@ import java.util.List;
 @RequestMapping("/players")
 public class PlayerController
 {
-    @Autowired
-    private PlayerService playerService;
+    private final PlayerService playerService;
 
-    @Autowired
-    private TeamService teamService;
+    private final TeamService teamService;
+
+    public PlayerController(PlayerService playerService, TeamService teamService)
+    {
+        this.playerService = playerService;
+        this.teamService = teamService;
+    }
 
     @GetMapping("/create")
     public String showCreatePlayer(Model model)

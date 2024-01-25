@@ -10,7 +10,6 @@ import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
 import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import com.towsif.PlayerManagementSystem.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,20 +26,24 @@ import java.util.stream.Collectors;
 @Transactional
 public class TeamService
 {
-    @Autowired
-    private TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
 
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private SponsorRepository sponsorRepository;
+    private final SponsorRepository sponsorRepository;
 
-    @Autowired
-    private PaginationAndSortingService paginationAndSortingService;
+    private final PaginationAndSortingService paginationAndSortingService;
+
+    public TeamService(TeamRepository teamRepository, PlayerRepository playerRepository, MatchRepository matchRepository, SponsorRepository sponsorRepository, PaginationAndSortingService paginationAndSortingService)
+    {
+        this.teamRepository = teamRepository;
+        this.playerRepository = playerRepository;
+        this.matchRepository = matchRepository;
+        this.sponsorRepository = sponsorRepository;
+        this.paginationAndSortingService = paginationAndSortingService;
+    }
 
     public Team saveTeam(Team team)
     {
