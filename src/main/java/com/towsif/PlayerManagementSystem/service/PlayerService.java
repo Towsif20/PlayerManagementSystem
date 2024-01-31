@@ -53,7 +53,6 @@ public class PlayerService
         Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
                 .orElseThrow(() -> new EntityNotFoundException("No match Found with id " + matchId));
 
-//        player.getMatches().add(match);
         match.getPlayers().add(player);
 
         playerRepository.save(player);

@@ -64,11 +64,6 @@ public class Match implements Serializable
     @ManyToMany(
             cascade = CascadeType.ALL
     )
-    @JoinTable(
-            name = "player_match",
-            joinColumns = @JoinColumn(name = "match_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id")
-    )
     @JsonIgnore
     List<Player> players;
 
