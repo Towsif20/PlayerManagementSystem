@@ -30,7 +30,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
                     "AND p.deleted = false " +
                     "And p.player.deleted = false"
     )
-    Long findRunsByPlayerId(Long id);
+    long findRunsByPlayerId(Long id);
 
     @Query(
             "SELECT SUM(p.runs) " +
@@ -39,7 +39,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
                     "AND p.deleted = false " +
                     "And p.match.deleted = false"
     )
-    Long findRunsByMatchId(Long id);
+    long findRunsByMatchId(Long id);
 
     @Query("SELECT SUM(performance.runs) " +
             "FROM Performance performance " +
@@ -51,7 +51,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
             "And performance.player.deleted = false " +
             "And performance.match.deleted = false"
     )
-    Long findTotalRunsInAMatchByTeamId(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
+    long findTotalRunsInAMatchByTeamId(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
 
     Page<Performance> findPerformanceByPlayerTeamIdAndDeletedFalse(Long teamId, Pageable pageable);
 }

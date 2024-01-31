@@ -2,7 +2,6 @@ package com.towsif.PlayerManagementSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,14 +15,11 @@ public class Performance implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @PositiveOrZero
-    private Integer runs;
+    private int runs;
 
-    @PositiveOrZero
-    private Integer wickets;
+    private int wickets;
 
-    @PositiveOrZero
-    private Integer catches;
+    private int catches;
 
     @JsonIgnore
     @CreationTimestamp
@@ -63,32 +59,32 @@ public class Performance implements Serializable
         this.id = id;
     }
 
-    public Integer getRuns()
+    public int getRuns()
     {
         return runs;
     }
 
-    public void setRuns(Integer runs)
+    public void setRuns(int runs)
     {
         this.runs = runs;
     }
 
-    public Integer getWickets()
+    public int getWickets()
     {
         return wickets;
     }
 
-    public void setWickets(Integer wickets)
+    public void setWickets(int wickets)
     {
         this.wickets = wickets;
     }
 
-    public Integer getCatches()
+    public int getCatches()
     {
         return catches;
     }
 
-    public void setCatches(Integer catches)
+    public void setCatches(int catches)
     {
         this.catches = catches;
     }

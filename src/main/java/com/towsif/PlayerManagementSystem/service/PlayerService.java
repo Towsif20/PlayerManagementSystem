@@ -140,7 +140,7 @@ public class PlayerService
         return player.getSponsors();
     }
 
-    public Long findRunsByPlayerId(Long id)
+    public long findRunsByPlayerId(Long id)
     {
         return performanceRepository.findRunsByPlayerId(id);
     }

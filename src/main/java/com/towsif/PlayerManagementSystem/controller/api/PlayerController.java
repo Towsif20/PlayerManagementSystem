@@ -110,7 +110,7 @@ public class PlayerController
     }
 
     @GetMapping("/{id}/runs")
-    public Long findRunsByPlayerId(@PathVariable("id") Long id)
+    public long findRunsByPlayerId(@PathVariable("id") Long id)
     {
         return playerService.findRunsByPlayerId(id);
     }

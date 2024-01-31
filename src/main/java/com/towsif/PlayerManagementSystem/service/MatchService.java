@@ -163,12 +163,12 @@ public class MatchService
         return Arrays.asList(match.getHomeTeam(), match.getAwayTeam());
     }
 
-    public Long findRunsByMatchId(Long id)
+    public long findRunsByMatchId(Long id)
     {
         return performanceRepository.findRunsByMatchId(id);
     }
 
-    public Long findRunsByMatchIdAndPlayerId(Long matchId, Long teamId)
+    public long findRunsByMatchIdAndPlayerId(Long matchId, Long teamId)
     {
         return performanceRepository.findTotalRunsInAMatchByTeamId(matchId, teamId);
     }

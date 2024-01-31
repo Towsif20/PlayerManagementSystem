@@ -91,13 +91,13 @@ public class MatchController
     }
 
     @GetMapping("/{id}/runs")
-    public Long findRunsByMatchId(@PathVariable("id") Long id)
+    public long findRunsByMatchId(@PathVariable("id") Long id)
     {
         return matchService.findRunsByMatchId(id);
     }
 
     @GetMapping("/{matchId}/teams/{teamId}/runs")
-    public Long findRunsByTeamIdAndMatchId(@PathVariable("matchId") Long matchId, @PathVariable("teamId") Long teamId)
+    public long findRunsByTeamIdAndMatchId(@PathVariable("matchId") Long matchId, @PathVariable("teamId") Long teamId)
     {
         return matchService.findRunsByMatchIdAndPlayerId(matchId, teamId);
     }
