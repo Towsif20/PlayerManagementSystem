@@ -12,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @Service
 public class PerformanceService
 {
@@ -34,7 +32,7 @@ public class PerformanceService
     }
 
     @Transactional
-    public Performance savePerformance(Performance performance, Long matchId, Long playerId)
+    public void savePerformance(Performance performance, Long matchId, Long playerId)
     {
         Match match = matchRepository.findMatchByIdAndDeletedFalse(matchId)
                         .orElseThrow(() -> new EntityNotFoundException("No match found with id " + matchId));
@@ -54,7 +52,7 @@ public class PerformanceService
         performance.setMatch(match);
         performance.setPlayer(player);
 
-        return performanceRepository.save(performance);
+        performanceRepository.save(performance);
     }
 
     public Page<Performance> findAllPerformances(int page, int size, String sortBy, String sortOrder)
@@ -81,18 +79,7 @@ public class PerformanceService
         performanceRepository.save(performance);
     }
 
-    @Transactional
-    public Performance updatePerformanceById(Long id, Performance performanceFromRequest)
-    {
-        Performance performanceFromDB = performanceRepository.findPerformanceByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("Performance not found with id " + id));
 
-        performanceFromRequest.setId(id);
-        performanceFromRequest.setUpdatedAt(LocalDateTime.now());
-        performanceFromRequest.setCreatedAt(performanceFromDB.getCreatedAt());
-
-        return performanceRepository.save(performanceFromRequest);
-    }
 
     public Performance findPerformanceByMatchIdAndPlayerId(Long matchId, Long playerId)
     {

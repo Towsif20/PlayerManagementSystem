@@ -1,4 +1,4 @@
-package com.towsif.PlayerManagementSystem.controller.view;
+package com.towsif.PlayerManagementSystem.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

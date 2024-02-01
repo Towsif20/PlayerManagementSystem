@@ -1,4 +1,4 @@
-package com.towsif.PlayerManagementSystem.controller.view;
+package com.towsif.PlayerManagementSystem.controller;
 
 import com.towsif.PlayerManagementSystem.entity.Performance;
 import com.towsif.PlayerManagementSystem.service.PerformanceService;

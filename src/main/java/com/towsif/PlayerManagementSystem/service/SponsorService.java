@@ -1,15 +1,14 @@
 package com.towsif.PlayerManagementSystem.service;
 
-import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Sponsor;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,16 +24,16 @@ public class SponsorService
         this.paginationAndSortingService = paginationAndSortingService;
     }
 
-    public Sponsor saveSponsor(Sponsor sponsor)
+    public void saveSponsor(Sponsor sponsor)
     {
-        return sponsorRepository.save(sponsor);
+        sponsorRepository.save(sponsor);
     }
 
-    public List<Sponsor> findAllSponsors(int page, int size, String sortBy, String sortOrder)
+    public Page<Sponsor> findAllSponsors(int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return sponsorRepository.findSponsorByDeletedFalse(pageable).getContent();
+        return sponsorRepository.findSponsorByDeletedFalse(pageable);
     }
 
     public Sponsor findSPoSponsorById(Long id)
@@ -52,24 +51,6 @@ public class SponsorService
         sponsor.setDeleted(true);
 
         sponsorRepository.save(sponsor);
-    }
-
-    @Transactional
-    public Sponsor updateSponsorById(Long id, Sponsor sponsorFromRequest)
-    {
-        Sponsor sponsorFromDB = sponsorRepository.findSponsorByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("No sponsor found with id " + id));
-
-        sponsorFromRequest.setId(id);
-        sponsorFromRequest.setUpdatedAt(LocalDateTime.now());
-        sponsorFromRequest.setCreatedAt(sponsorFromDB.getCreatedAt());
-
-        return sponsorRepository.save(sponsorFromRequest);
-    }
-
-    public List<Player> findPlayersBySponsorId(Long sponsorId)
-    {
-        return sponsorRepository.findPlayersBySponsorId(sponsorId);
     }
 
     public List<Team> findTeamsBySponsorId(Long sponsorId)
