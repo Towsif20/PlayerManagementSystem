@@ -1,6 +1,5 @@
 package com.towsif.PlayerManagementSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,30 +18,24 @@ public class Performance implements Serializable
 
     private int catches;
 
-    @JsonIgnore
     private LocalDateTime createdAt;
 
-    @JsonIgnore
     private LocalDateTime updatedAt;
 
-    @JsonIgnore
     private LocalDateTime deletedAt;
 
-    @JsonIgnore
     private boolean deleted = false;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JsonIgnore
     private Player player;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JsonIgnore
     Match match;
 
     public Long getId()

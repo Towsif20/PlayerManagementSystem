@@ -1,6 +1,5 @@
 package com.towsif.PlayerManagementSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -22,22 +21,17 @@ public class Team implements Serializable
 
     private Integer foundedYear;
 
-    @JsonIgnore
     private LocalDateTime createdAt;
 
-    @JsonIgnore
     private LocalDateTime updatedAt;
 
-    @JsonIgnore
     private LocalDateTime deletedAt;
 
-    @JsonIgnore
     private boolean deleted = false;
 
     @ManyToMany(
             cascade = CascadeType.ALL
     )
-    @JsonIgnore
     private List<Sponsor> sponsors;
 
     public Long getId()

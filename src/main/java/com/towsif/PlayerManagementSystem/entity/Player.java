@@ -1,6 +1,5 @@
 package com.towsif.PlayerManagementSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,33 +25,26 @@ public class Player implements Serializable
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @JsonIgnore
     private LocalDateTime createdAt;
 
-    @JsonIgnore
     private LocalDateTime updatedAt;
 
-    @JsonIgnore
     private LocalDateTime deletedAt;
 
-    @JsonIgnore
     private boolean deleted = false;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JsonIgnore
     private Team team;
 
     @ManyToMany(mappedBy = "players")
-    @JsonIgnore
     private List<Match> matches;
 
     @ManyToMany(
             cascade = CascadeType.ALL
     )
-    @JsonIgnore
     private List<Sponsor> sponsors;
 
     public Long getId()
