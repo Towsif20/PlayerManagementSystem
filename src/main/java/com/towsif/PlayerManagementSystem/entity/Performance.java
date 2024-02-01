@@ -2,8 +2,6 @@ package com.towsif.PlayerManagementSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,11 +20,9 @@ public class Performance implements Serializable
     private int catches;
 
     @JsonIgnore
-    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @JsonIgnore
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @JsonIgnore
@@ -162,5 +158,22 @@ public class Performance implements Serializable
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
                 '}';
+    }
+
+    @PrePersist
+    private void setCreationTime()
+    {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    private void setUpdateTime()
+    {
+        LocalDateTime time = LocalDateTime.now();
+
+        if(this.deleted)
+            deletedAt = time;
+
+        updatedAt = time;
     }
 }

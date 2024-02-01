@@ -16,6 +16,7 @@
     <form action="#" th:action="@{/players/save}" th:object="${player}", method="POST">
 
         <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{createdAt}" />
 
         <input type="text" th:field="*{name}"
                placeholder="Player Name" class="form-control mb-4 col-4">

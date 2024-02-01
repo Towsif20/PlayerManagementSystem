@@ -50,7 +50,6 @@ public class SponsorService
                 .orElseThrow(() -> new EntityNotFoundException("No sponsor found with id " + id));
 
         sponsor.setDeleted(true);
-        sponsor.setDeletedAt(LocalDateTime.now());
 
         sponsorRepository.save(sponsor);
     }

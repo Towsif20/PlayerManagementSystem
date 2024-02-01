@@ -18,6 +18,7 @@
     <form action="#" th:action="@{/matches/save}" th:object="${match}", method="POST">
 
         <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{createdAt}" />
 
         <input type="text" th:field="*{venue}"
                placeholder="Match Venue" class="form-control mb-4 col-4">
@@ -40,12 +41,12 @@
         <label for="availableHomePlayersList">Available Home Players:</label>
         <ul id="availableHomePlayersList">
             <!-- Populate with available players from your model -->
-            <th:block th:if="${update != null}" th:each="player : ${availableHomePlayers}">
-                <li>
+            <div th:if="${update != null}">
+                <li th:each="player : ${availableHomePlayers}">
                     <input type="checkbox" class="playerCheckbox" th:value="${player.id}" th:checked="${match.players.contains(player)}">
                     <span th:text="${player.name}"></span>
                 </li>
-            </th:block>
+            </div>
         </ul>
 
         <!-- Add All Home Players Button -->
@@ -67,12 +68,12 @@
         <label for="availableAwayPlayersList">Available Away Players:</label>
         <ul id="availableAwayPlayersList">
             <!-- Populate with available players from your model -->
-            <th:block th:if="${update != null}" th:each="player : ${availableAwayPlayers}">
-                <li>
+            <div th:if="${update != null}">
+                <li th:each="player : ${availableAwayPlayers}">
                     <input type="checkbox" class="playerCheckbox" th:value="${player.id}" th:checked="${match.players.contains(player)}">
                     <span th:text="${player.name}"></span>
                 </li>
-            </th:block>
+            </div>
         </ul>
 
         <button type="button" onclick="addAwayPlayers()">Add Away Players</button>

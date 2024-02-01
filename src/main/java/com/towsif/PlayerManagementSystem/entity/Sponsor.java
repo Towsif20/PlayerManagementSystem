@@ -1,13 +1,8 @@
 package com.towsif.PlayerManagementSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -23,11 +18,9 @@ public class Sponsor implements Serializable
     private String name;
 
     @JsonIgnore
-    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @JsonIgnore
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @JsonIgnore
@@ -107,5 +100,22 @@ public class Sponsor implements Serializable
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
                 '}';
+    }
+
+    @PrePersist
+    private void setCreationTime()
+    {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    private void setUpdateTime()
+    {
+        LocalDateTime time = LocalDateTime.now();
+
+        if(this.deleted)
+            deletedAt = time;
+
+        updatedAt = time;
     }
 }

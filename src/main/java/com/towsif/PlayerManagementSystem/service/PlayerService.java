@@ -85,7 +85,6 @@ public class PlayerService
                 .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + id));
 
         player.setDeleted(true);
-        player.setDeletedAt(LocalDateTime.now());
 
         playerRepository.save(player);
     }

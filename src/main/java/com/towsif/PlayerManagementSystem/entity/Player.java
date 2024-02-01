@@ -3,8 +3,6 @@ package com.towsif.PlayerManagementSystem.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -29,11 +27,9 @@ public class Player implements Serializable
     private Role role;
 
     @JsonIgnore
-    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @JsonIgnore
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @JsonIgnore
@@ -182,5 +178,22 @@ public class Player implements Serializable
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
                 '}';
+    }
+
+    @PrePersist
+    private void setCreationTime()
+    {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    private void setUpdateTime()
+    {
+        LocalDateTime time = LocalDateTime.now();
+
+        if(this.deleted)
+            deletedAt = time;
+
+        updatedAt = time;
     }
 }

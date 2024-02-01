@@ -71,7 +71,6 @@ public class TeamService
                 .orElseThrow(() -> new EntityNotFoundException("No Team Found with id " + id));
 
         team.setDeleted(true);
-        team.setDeletedAt(LocalDateTime.now());
 
         teamRepository.save(team);
     }

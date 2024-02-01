@@ -77,7 +77,6 @@ public class PerformanceService
                 .orElseThrow(() -> new EntityNotFoundException("Performance not found with id " + id));
 
         performance.setDeleted(true);
-        performance.setDeletedAt(LocalDateTime.now());
 
         performanceRepository.save(performance);
     }

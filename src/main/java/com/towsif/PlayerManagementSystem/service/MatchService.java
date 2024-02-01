@@ -79,7 +79,6 @@ public class MatchService
                 .orElseThrow(() -> new EntityNotFoundException("No match found with " + id));
 
         match.setDeleted(true);
-        match.setDeletedAt(LocalDateTime.now());
 
         matchRepository.save(match);
     }
