@@ -9,13 +9,11 @@ import com.towsif.PlayerManagementSystem.repository.SponsorRepository;
 import com.towsif.PlayerManagementSystem.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,6 +32,7 @@ public class TeamService
         this.paginationAndSortingService = paginationAndSortingService;
     }
 
+    @Transactional
     public void saveTeam(Team team)
     {
         teamRepository.save(team);
@@ -46,11 +45,8 @@ public class TeamService
     }
 
     @Transactional
-    public void deleteTeamById(Long id)
+    public void deleteTeam(Team team)
     {
-        Team team = teamRepository.findTeamByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("No Team Found with id " + id));
-
         team.setDeleted(true);
 
         teamRepository.save(team);
@@ -70,12 +66,6 @@ public class TeamService
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        Page<Object[]> resultPage = teamRepository.findAllTeamsWithPlayerCount(pageable);
-
-        List<TeamWithPlayerCountDTO> teamWithPlayerCountDTOList = resultPage.getContent().stream()
-                .map(objects -> new TeamWithPlayerCountDTO((Team) objects[0], (Long) objects[1]))
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(teamWithPlayerCountDTOList, pageable, resultPage.getTotalElements());
+        return teamRepository.findAllTeamsWithPlayerCount(pageable);
     }
 }

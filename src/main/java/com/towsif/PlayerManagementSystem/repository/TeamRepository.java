@@ -1,5 +1,6 @@
 package com.towsif.PlayerManagementSystem.repository;
 
+import com.towsif.PlayerManagementSystem.dto.TeamWithPlayerCountDTO;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,9 @@ public interface TeamRepository extends JpaRepository<Team, Long>
 
     Optional<Team> findTeamByIdAndDeletedFalse(Long id);
 
-    @Query("SELECT t, COUNT(p) as playerCount " +
+    @Query("SELECT new com.towsif.PlayerManagementSystem.dto.TeamWithPlayerCountDTO(t, COUNT(p) as playerCount) " +
             "FROM Player p RIGHT JOIN p.team t " +
             "WHERE (p.deleted = false or p is null) AND t.deleted = false " +
             "GROUP BY t")
-    Page<Object[]> findAllTeamsWithPlayerCount(Pageable pageable);
+    Page<TeamWithPlayerCountDTO> findAllTeamsWithPlayerCount(Pageable pageable);
 }

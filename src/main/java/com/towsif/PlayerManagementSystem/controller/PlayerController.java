@@ -28,15 +28,24 @@ public class PlayerController
         this.teamService = teamService;
     }
 
+    @ModelAttribute("teams")
+    public List<Team> addTeamsToModel()
+    {
+        return teamService.findAll();
+    }
+
+    @ModelAttribute("player")
+    public Player addPlayerToModel(@PathVariable(required = false) Long id)
+    {
+        if(id == null)
+            return new Player();
+
+        return playerService.findPlayerById(id);
+    }
+
     @GetMapping("/create")
     public String showCreatePlayer(Model model)
     {
-        Player player = new Player();
-        List<Team> teams = teamService.findAll();
-
-        model.addAttribute("player", player);
-        model.addAttribute("teams", teams);
-
         return "save_player";
     }
 
@@ -72,10 +81,6 @@ public class PlayerController
     @GetMapping("/{id}")
     public String showPlayerById(@PathVariable Long id, Model model)
     {
-        Player player = playerService.findPlayerById(id);
-
-        model.addAttribute("player", player);
-
         return "player";
     }
 
@@ -85,9 +90,10 @@ public class PlayerController
                                         @RequestParam(defaultValue = "10") int size,
                                         @RequestParam(defaultValue = "id") String sortBy,
                                         @RequestParam(defaultValue = "asc") String sortOrder,
+                                        @ModelAttribute Player player,
                                         Model model)
     {
-        Page<Match> matchPage = playerService.findMatchesByPlayerId(id, page, size, sortBy, sortOrder);
+        Page<Match> matchPage = playerService.findMatchesByPlayer(player, page, size, sortBy, sortOrder);
 
         model.addAttribute("matchPage", matchPage);
         model.addAttribute("sortBy", sortBy);
@@ -99,20 +105,17 @@ public class PlayerController
     @GetMapping("/{id}/update")
     public String showUpdateForm(@PathVariable Long id, Model model)
     {
-        Player player = playerService.findPlayerById(id);
-        List<Team> teams = teamService.findAll();
-
-        model.addAttribute("player", player);
         model.addAttribute("update", true);
-        model.addAttribute("teams", teams);
 
         return "save_player";
     }
 
     @GetMapping("/{id}/delete")
-    public String deletePlayer(@PathVariable Long id, Model model)
+    public String deletePlayer(@PathVariable Long id,
+                               @ModelAttribute Player player,
+                               Model model)
     {
-        playerService.deletePlayerById(id);
+        playerService.deletePlayer(player);
 
         return "redirect:/players";
     }

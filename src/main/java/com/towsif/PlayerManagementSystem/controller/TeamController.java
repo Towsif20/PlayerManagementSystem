@@ -33,6 +33,15 @@ public class TeamController
         this.matchService = matchService;
     }
 
+    @ModelAttribute("team")
+    public Team addPlayerToModel(@PathVariable(required = false) Long id)
+    {
+        if(id == null)
+            return new Team();
+
+        return teamService.findTeamById(id);
+    }
+
     @PostMapping("/save")
     public String saveTeam(@Valid @ModelAttribute Team team, BindingResult bindingResult)
     {
@@ -49,19 +58,12 @@ public class TeamController
     @GetMapping("/create")
     public String showCreateTeam(Model model)
     {
-        Team team = new Team();
-
-        model.addAttribute("team", team);
-
         return "save_team";
     }
 
     @GetMapping("/{id}/update")
     public String showUpdateForm(@PathVariable Long id, Model model)
     {
-        Team team = teamService.findTeamById(id);
-
-        model.addAttribute("team", team);
         model.addAttribute("update", true);
 
         return "save_team";
@@ -88,10 +90,11 @@ public class TeamController
                               @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "id") String sortBy,
                               @RequestParam(defaultValue = "asc") String sortOrder,
-                              @PathVariable("id") Long id,
+                              @PathVariable Long id,
+                              @ModelAttribute Team team,
                               Model model)
     {
-        Page<Player> playerPage = playerService.findAllPlayersByTeam(page, size, sortBy, sortOrder, id);
+        Page<Player> playerPage = playerService.findAllPlayersByTeam(team, page, size, sortBy, sortOrder);
 
         model.addAttribute("playerPage", playerPage);
         model.addAttribute("sortBy", sortBy);
@@ -134,9 +137,11 @@ public class TeamController
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteTeam(@PathVariable Long id, Model model)
+    public String deleteTeam(@PathVariable Long id,
+                             @ModelAttribute Team team,
+                             Model model)
     {
-        teamService.deleteTeamById(id);
+        teamService.deleteTeam(team);
 
         return "redirect:/teams";
     }

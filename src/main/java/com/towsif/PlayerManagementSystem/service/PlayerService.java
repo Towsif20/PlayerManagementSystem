@@ -2,6 +2,7 @@ package com.towsif.PlayerManagementSystem.service;
 
 import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
+import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.MatchRepository;
 import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
@@ -26,6 +27,7 @@ public class PlayerService
         this.paginationAndSortingService = paginationAndSortingService;
     }
 
+    @Transactional
     public void savePlayer(Player player)
     {
         playerRepository.save(player);
@@ -38,11 +40,11 @@ public class PlayerService
         return playerRepository.findPlayerByDeletedFalse(pageable);
     }
 
-    public Page<Player> findAllPlayersByTeam(int page, int size, String sortBy, String sortOrder, Long teamId)
+    public Page<Player> findAllPlayersByTeam(Team team, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return playerRepository.findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(pageable, teamId);
+        return playerRepository.findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(pageable, team.getId());
     }
 
     public Player findPlayerById(Long id)
@@ -52,22 +54,19 @@ public class PlayerService
     }
 
     @Transactional
-    public void deletePlayerById(Long id)
+    public void deletePlayer(Player player)
     {
-        Player player = playerRepository.findPlayerByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("No Player Found with id " + id));
-
         player.setDeleted(true);
 
         playerRepository.save(player);
     }
 
 
-    public Page<Match> findMatchesByPlayerId(Long id, int page, int size, String sortBy, String sortOrder)
+    public Page<Match> findMatchesByPlayer(Player player, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return playerRepository.findMatchesByPlayerId(id, pageable);
+        return playerRepository.findMatchesByPlayerId(player.getId(), pageable);
     }
 
 }
