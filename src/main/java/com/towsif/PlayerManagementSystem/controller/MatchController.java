@@ -28,28 +28,38 @@ public class MatchController
         this.teamService = teamService;
     }
 
-    @GetMapping("/create")
-    public String showCreateMatch(Model model)
+    @ModelAttribute("match")
+    public Match addMatchToModel(@PathVariable(required = false) Long id)
     {
-        Match match = new Match();
-        List<Team> teams = teamService.findAll();
+        if(id == null)
+            return new Match();
 
-        model.addAttribute("match", match);
-        model.addAttribute("teams", teams);
+        return matchService.findMatchById(id);
+    }
 
+    @ModelAttribute("teams")
+    public List<Team> addTeamsToModel()
+    {
+        return teamService.findAll();
+    }
+
+    @GetMapping("/create")
+    public String showCreateMatch(Model model,
+                                  @ModelAttribute Match match,
+                                  @ModelAttribute List<Team> teams)
+    {
         return "save_match";
     }
 
     @GetMapping("/{id}/update")
-    public String showUpdateMatch(@PathVariable Long id, Model model)
+    public String showUpdateMatch(@PathVariable Long id,
+                                  @ModelAttribute Match match,
+                                  @ModelAttribute List<Team> teams,
+                                  Model model)
     {
-        Match match = matchService.findMatchById(id);
-        List<Team> teams = teamService.findAll();
         List<Player> homePlayers = teamService.findPlayers(match.getHomeTeam().getId());
         List<Player> awayPlayers = teamService.findPlayers(match.getAwayTeam().getId());
 
-        model.addAttribute("match", match);
-        model.addAttribute("teams", teams);
         model.addAttribute("availableHomePlayers", homePlayers);
         model.addAttribute("availableAwayPlayers", awayPlayers);
         model.addAttribute("update", true);
@@ -89,19 +99,16 @@ public class MatchController
     @GetMapping("/{id}")
     public String showMatchById(@PathVariable Long id, Model model)
     {
-        Match match = matchService.findMatchById(id);
-
-        model.addAttribute("match", match);
-
         return "match";
     }
 
     @GetMapping("/{id}/players")
-    public String showPlayersByMatchId(@PathVariable Long id, Model model)
+    public String showPlayersByMatchId(@PathVariable Long id,
+                                       @ModelAttribute Match match,
+                                       Model model)
     {
-        Match match = matchService.findMatchById(id);
-        List<Player> homePlayers = matchService.findHomeTeamPlayers(id);
-        List<Player> awayPlayers = matchService.findAwayTeamPlayers(id);
+        List<Player> homePlayers = matchService.findHomeTeamPlayers(match);
+        List<Player> awayPlayers = matchService.findAwayTeamPlayers(match);
 
         model.addAttribute("match", match);
         model.addAttribute("homePlayers", homePlayers);
@@ -111,9 +118,9 @@ public class MatchController
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteMatchById(@PathVariable Long id, Model model)
+    public String deleteMatchById(@ModelAttribute Match match, Model model)
     {
-        matchService.deleteMatchById(id);
+        matchService.deleteMatch(match);
 
         return "redirect:/matches";
     }

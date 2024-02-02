@@ -86,11 +86,11 @@ public class TeamController
     }
 
     @GetMapping("/{id}/players")
-    public String showPlayers(@RequestParam(defaultValue = "0") int page,
+    public String showPlayers(@PathVariable Long id,
+                              @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "id") String sortBy,
                               @RequestParam(defaultValue = "asc") String sortOrder,
-                              @PathVariable Long id,
                               @ModelAttribute Team team,
                               Model model)
     {
@@ -115,9 +115,10 @@ public class TeamController
                               @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "date") String sortBy,
                               @RequestParam(defaultValue = "desc") String sortOrder,
+                              @ModelAttribute Team team,
                               Model model)
     {
-        Page<Match> matchPage = matchService.findAllMatchesByTeam(id, page, size, sortBy, sortOrder);
+        Page<Match> matchPage = matchService.findAllMatchesByTeam(team, page, size, sortBy, sortOrder);
 
         model.addAttribute("matchPage", matchPage);
         model.addAttribute("sortBy", sortBy);
@@ -129,10 +130,6 @@ public class TeamController
     @GetMapping("/{id}")
     public String showTeamById(@PathVariable Long id, Model model)
     {
-        Team team = teamService.findTeamById(id);
-
-        model.addAttribute("team", team);
-
         return "team";
     }
 

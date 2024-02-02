@@ -3,6 +3,7 @@ package com.towsif.PlayerManagementSystem.service;
 import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Performance;
 import com.towsif.PlayerManagementSystem.entity.Player;
+import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.repository.MatchRepository;
 import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
@@ -87,24 +88,24 @@ public class PerformanceService
                 .orElseThrow(() -> new EntityNotFoundException("No performance found in match " + matchId + " for player " + playerId));
     }
 
-    public Page<Performance> findPerformanceByMatchId(Long id, int page, int size, String sortBy, String sortOrder)
+    public Page<Performance> findPerformanceByMatch(Match match, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return performanceRepository.findPerformanceByMatchIdAndDeletedFalseAndMatchDeletedFalse(id, pageable);
+        return performanceRepository.findPerformanceByMatchIdAndDeletedFalseAndMatchDeletedFalse(match.getId(), pageable);
     }
 
-    public Page<Performance> findPerformanceByPlayerId(Long id, int page, int size, String sortBy, String sortOrder)
+    public Page<Performance> findPerformanceByPlayer(Player player, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return performanceRepository.findPerformanceByPlayerIdAndDeletedFalseAndPlayerDeletedFalse(id, pageable);
+        return performanceRepository.findPerformanceByPlayerIdAndDeletedFalseAndPlayerDeletedFalse(player.getId(), pageable);
     }
 
-    public Page<Performance> findPerformanceByTeamId(Long teamId, int page, int size, String sortBy, String sortOrder)
+    public Page<Performance> findPerformanceByTeamId(Team team, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return performanceRepository.findPerformanceByPlayerTeamIdAndDeletedFalse(teamId, pageable);
+        return performanceRepository.findPerformanceByPlayerTeamIdAndDeletedFalse(team.getId(), pageable);
     }
 }

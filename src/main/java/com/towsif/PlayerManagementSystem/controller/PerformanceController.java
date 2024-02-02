@@ -1,14 +1,17 @@
 package com.towsif.PlayerManagementSystem.controller;
 
+import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Performance;
+import com.towsif.PlayerManagementSystem.entity.Player;
+import com.towsif.PlayerManagementSystem.entity.Team;
+import com.towsif.PlayerManagementSystem.service.MatchService;
 import com.towsif.PlayerManagementSystem.service.PerformanceService;
+import com.towsif.PlayerManagementSystem.service.PlayerService;
+import com.towsif.PlayerManagementSystem.service.TeamService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/performances")
@@ -16,9 +19,45 @@ public class PerformanceController
 {
     private final PerformanceService performanceService;
 
-    public PerformanceController(PerformanceService performanceService)
+    private final PlayerService playerService;
+
+    private final MatchService matchService;
+
+    private final TeamService teamService;
+
+    public PerformanceController(PerformanceService performanceService, PlayerService playerService, MatchService matchService, TeamService teamService)
     {
         this.performanceService = performanceService;
+        this.playerService = playerService;
+        this.matchService = matchService;
+        this.teamService = teamService;
+    }
+
+    @ModelAttribute
+    public Player addPlayerToModel(@PathVariable(required = false) Long playerId)
+    {
+        if(playerId == null)
+            return null;
+
+        return playerService.findPlayerById(playerId);
+    }
+
+    @ModelAttribute
+    public Match addMatchToModel(@PathVariable(required = false) Long matchId)
+    {
+        if(matchId == null)
+            return null;
+
+        return matchService.findMatchById(matchId);
+    }
+
+    @ModelAttribute
+    public Team addTeamToModel(@PathVariable(required = false) Long teamId)
+    {
+        if(teamId == null)
+            return null;
+
+        return teamService.findTeamById(teamId);
     }
 
     @GetMapping
@@ -43,9 +82,10 @@ public class PerformanceController
                                               @RequestParam(defaultValue = "10") int size,
                                               @RequestParam(defaultValue = "id") String sortBy,
                                               @RequestParam(defaultValue = "asc") String sortOrder,
+                                              @ModelAttribute Player player,
                                               Model model)
     {
-        Page<Performance> performancePage = performanceService.findPerformanceByPlayerId(playerId, page, size, sortBy, sortOrder);
+        Page<Performance> performancePage = performanceService.findPerformanceByPlayer(player, page, size, sortBy, sortOrder);
 
         model.addAttribute("performancePage", performancePage);
         model.addAttribute("sortBy", sortBy);
@@ -60,9 +100,10 @@ public class PerformanceController
                                             @RequestParam(defaultValue = "10") int size,
                                             @RequestParam(defaultValue = "id") String sortBy,
                                             @RequestParam(defaultValue = "asc") String sortOrder,
+                                            @ModelAttribute Team team,
                                             Model model)
     {
-        Page<Performance> performancePage = performanceService.findPerformanceByTeamId(teamId, page, size, sortBy, sortOrder);
+        Page<Performance> performancePage = performanceService.findPerformanceByTeamId(team, page, size, sortBy, sortOrder);
 
         model.addAttribute("performancePage", performancePage);
         model.addAttribute("sortBy", sortBy);
@@ -77,9 +118,10 @@ public class PerformanceController
                                              @RequestParam(defaultValue = "10") int size,
                                              @RequestParam(defaultValue = "id") String sortBy,
                                              @RequestParam(defaultValue = "asc") String sortOrder,
+                                             @ModelAttribute Match match,
                                              Model model)
     {
-        Page<Performance> performancePage = performanceService.findPerformanceByMatchId(matchId, page, size, sortBy, sortOrder);
+        Page<Performance> performancePage = performanceService.findPerformanceByMatch(match, page, size, sortBy, sortOrder);
 
         model.addAttribute("performancePage", performancePage);
         model.addAttribute("sortBy", sortBy);
@@ -95,9 +137,11 @@ public class PerformanceController
                                                   @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "id") String sortBy,
                                                   @RequestParam(defaultValue = "asc") String sortOrder,
+                                                  @ModelAttribute Match match,
+                                                  @ModelAttribute Player player,
                                                   Model model)
     {
-        Page<Performance> performancePage = performanceService.findPerformanceByPlayerId(playerId, page, size, sortBy, sortOrder);
+        Page<Performance> performancePage = performanceService.findPerformanceByPlayer(player, page, size, sortBy, sortOrder);
 
         model.addAttribute("performancePage", performancePage);
         model.addAttribute("sortBy", sortBy);
