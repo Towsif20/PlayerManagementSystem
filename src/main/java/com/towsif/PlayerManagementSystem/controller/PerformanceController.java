@@ -141,12 +141,12 @@ public class PerformanceController
                                                   @ModelAttribute Player player,
                                                   Model model)
     {
-        Page<Performance> performancePage = performanceService.findPerformanceByPlayer(player, page, size, sortBy, sortOrder);
+        Performance performance = performanceService.findPerformanceByMatchAndPlayer(match, player);
 
-        model.addAttribute("performancePage", performancePage);
+        model.addAttribute("performance", performance);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortOrder", sortOrder);
 
-        return "performances";
+        return "performance";
     }
 }

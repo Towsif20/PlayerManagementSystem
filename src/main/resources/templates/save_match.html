@@ -85,6 +85,12 @@
 
         <input type="hidden" th:field="*{players}" id="selectedPlayersHidden">
 
+        <select th:if="${update != null}" id="winnerTeam" class="custom-select form-control mb-4" th:field="*{winnerTeam}">
+            <option value="0">None</option>
+            <option th:value="${match.homeTeam.id}" th:text="${match.homeTeam.name}"></option>
+            <option th:value="${match.awayTeam.id}" th:text="${match.awayTeam.name}"></option>
+        </select>
+
         <button type="submit" class="btn btn-info col-2"
         th:text="${update == null} ? Save : Update">
         </button>

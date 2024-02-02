@@ -1,6 +1,7 @@
 package com.towsif.PlayerManagementSystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -30,12 +31,14 @@ public class Performance implements Serializable
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
+    @NotNull
     private Player player;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
+    @NotNull
     Match match;
 
     public Long getId()

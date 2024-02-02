@@ -44,9 +44,7 @@ public class MatchController
     }
 
     @GetMapping("/create")
-    public String showCreateMatch(Model model,
-                                  @ModelAttribute Match match,
-                                  @ModelAttribute List<Team> teams)
+    public String showCreateMatch(Model model)
     {
         return "save_match";
     }
@@ -54,7 +52,6 @@ public class MatchController
     @GetMapping("/{id}/update")
     public String showUpdateMatch(@PathVariable Long id,
                                   @ModelAttribute Match match,
-                                  @ModelAttribute List<Team> teams,
                                   Model model)
     {
         List<Player> homePlayers = teamService.findPlayers(match.getHomeTeam().getId());

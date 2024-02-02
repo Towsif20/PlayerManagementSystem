@@ -16,7 +16,10 @@
             <ul>
                 <!-- Iterate over items for the first column -->
                 <li th:each="player : ${homePlayers}">
-                    <span><a th:text="${player.name}" th:href="@{/players/{id}(id = ${player.id})}"></a></span>
+                    <span><a class="btn btn-primary" th:text="${player.name}" th:href="@{/players/{id}(id = ${player.id})}"></a></span>
+                    <span><a th:text="Performance"
+                             th:href="@{/performances/matches/{matchId}/players/{playerId}(matchId = ${match.id}, playerId = ${player.id})}">
+                    </a></span>
                     <!-- Add more properties or customize as needed -->
                 </li>
             </ul>
@@ -29,7 +32,10 @@
             <ul>
                 <!-- Iterate over items for the second column -->
                 <li th:each="player : ${awayPlayers}">
-                    <span><a th:text="${player.name}" th:href="@{/players/{id}(id = ${player.id})}"></a></span>
+                    <span><a class="btn btn-primary" th:text="${player.name}" th:href="@{/players/{id}(id = ${player.id})}"></a></span>
+                    <span><a th:text="Performance"
+                             th:href="@{/performances/matches/{matchId}/players/{playerId}(matchId = ${match.id}, playerId = ${player.id})}">
+                    </a></span>
                     <!-- Add more properties or customize as needed -->
                 </li>
             </ul>

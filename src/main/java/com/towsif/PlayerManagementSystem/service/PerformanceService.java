@@ -82,10 +82,10 @@ public class PerformanceService
 
 
 
-    public Performance findPerformanceByMatchIdAndPlayerId(Long matchId, Long playerId)
+    public Performance findPerformanceByMatchAndPlayer(Match match, Player player)
     {
-        return performanceRepository.findPerformanceByMatchIdAndPlayerIdAndDeletedFalseAndPlayerDeletedFalseAndMatchDeletedFalse(matchId, playerId)
-                .orElseThrow(() -> new EntityNotFoundException("No performance found in match " + matchId + " for player " + playerId));
+        return performanceRepository.findPerformanceByMatchIdAndPlayerIdAndDeletedFalseAndPlayerDeletedFalseAndMatchDeletedFalse(match.getId(), player.getId())
+                .orElseThrow(() -> new EntityNotFoundException("No performance found in match " + player + " for player " + match));
     }
 
     public Page<Performance> findPerformanceByMatch(Match match, int page, int size, String sortBy, String sortOrder)

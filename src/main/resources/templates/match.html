@@ -35,7 +35,7 @@
                             <a th:href="@{/teams/{id}(id=${match.awayTeam.id})}" th:text="${match.awayTeam.name}"></a>
                         </p>
                         <p class="mb-2">
-                            <a th:text="${winnerTeam == null} ? 'None' : ${winnerTeam.name}"></a>
+                            <a th:text="${match.winnerTeam == null} ? 'None' : ${match.winnerTeam.name}"></a>
                         </p>
                     </strong>
                 </div>
