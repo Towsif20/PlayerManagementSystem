@@ -41,7 +41,7 @@ function updatePlayers(team)
 
     // Fetch the players for the selected team using AJAX
     $.ajax({
-        url: '/teams/' + selectedTeamId + '/playersResponseBody',
+        url: '/playersResponseBody/teams/' + selectedTeamId,
         type: 'GET',
         success: function(data) {
             // Populate the available players list

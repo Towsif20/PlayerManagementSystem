@@ -4,6 +4,7 @@ import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Team;
 import com.towsif.PlayerManagementSystem.service.MatchService;
+import com.towsif.PlayerManagementSystem.service.PlayerService;
 import com.towsif.PlayerManagementSystem.service.TeamService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,13 @@ public class MatchController
     private final MatchService matchService;
 
     private final TeamService teamService;
+    private final PlayerService playerService;
 
-    public MatchController(MatchService matchService, TeamService teamService)
+    public MatchController(MatchService matchService, TeamService teamService, PlayerService playerService)
     {
         this.matchService = matchService;
         this.teamService = teamService;
+        this.playerService = playerService;
     }
 
     @ModelAttribute("match")
@@ -43,6 +46,35 @@ public class MatchController
         return teamService.findAll();
     }
 
+    @ModelAttribute("matchPage")
+    public Page<Match> addMatchPageToModel(@PathVariable(required = false) Long playerId,
+                                           @PathVariable(required = false) Long teamId,
+                                           @RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size,
+                                           @RequestParam(defaultValue = "date") String sortBy,
+                                           @RequestParam(defaultValue = "desc") String sortOrder)
+    {
+        if(playerId != null)
+            return playerService.findMatchesByPlayer(playerId, page, size, sortBy, sortOrder);
+
+        if(teamId != null)
+            return matchService.findAllMatchesByTeam(teamId, page, size, sortBy, sortOrder);
+
+        return matchService.findAllMatches(page, size, sortBy, sortOrder);
+    }
+
+    @ModelAttribute("sortBy")
+    public String addSortParameterToModel(@RequestParam(defaultValue = "id") String sortBy)
+    {
+        return sortBy;
+    }
+
+    @ModelAttribute("sortOrder")
+    public String addSortOrderToModel(@RequestParam(defaultValue = "asc") String sortOrder)
+    {
+        return sortOrder;
+    }
+
     @GetMapping("/create")
     public String showCreateMatch(Model model)
     {
@@ -54,18 +86,18 @@ public class MatchController
                                   @ModelAttribute Match match,
                                   Model model)
     {
-        List<Player> homePlayers = teamService.findPlayers(match.getHomeTeam().getId());
-        List<Player> awayPlayers = teamService.findPlayers(match.getAwayTeam().getId());
+        List<Player> availableHomePlayers = teamService.findPlayers(match.getHomeTeam());
+        List<Player> availableAwayPlayers = teamService.findPlayers(match.getAwayTeam());
 
-        model.addAttribute("availableHomePlayers", homePlayers);
-        model.addAttribute("availableAwayPlayers", awayPlayers);
+        model.addAttribute("availableHomePlayers", availableHomePlayers);
+        model.addAttribute("availableAwayPlayers", availableAwayPlayers);
         model.addAttribute("update", true);
 
         return "save_match";
     }
 
     @PostMapping("/save")
-    public String savePlayer(@Valid @ModelAttribute Match match, BindingResult bindingResult)
+    public String saveMatch(@Valid @ModelAttribute Match match, BindingResult bindingResult)
     {
         if (bindingResult.hasErrors())
         {
@@ -84,12 +116,28 @@ public class MatchController
                                  @RequestParam(defaultValue = "desc") String sortOrder,
                                  Model model)
     {
-        Page<Match> matchPage = matchService.findAllMatches(page, size, sortBy, sortOrder);
+        return "matches";
+    }
 
-        model.addAttribute("matchPage", matchPage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
+    @GetMapping("/teams/{teamId}")
+    public String showAllMatchesByTeam(@PathVariable Long teamId,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size,
+                                       @RequestParam(defaultValue = "date") String sortBy,
+                                       @RequestParam(defaultValue = "desc") String sortOrder,
+                                       Model model)
+    {
+        return "matches";
+    }
 
+    @GetMapping("/players/{playerId}")
+    public String showAllMatchesByPlayer(@PathVariable Long playerId,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size,
+                                         @RequestParam(defaultValue = "date") String sortBy,
+                                         @RequestParam(defaultValue = "desc") String sortOrder,
+                                         Model model)
+    {
         return "matches";
     }
 
@@ -107,7 +155,6 @@ public class MatchController
         List<Player> homePlayers = matchService.findHomeTeamPlayers(match);
         List<Player> awayPlayers = matchService.findAwayTeamPlayers(match);
 
-        model.addAttribute("match", match);
         model.addAttribute("homePlayers", homePlayers);
         model.addAttribute("awayPlayers", awayPlayers);
 

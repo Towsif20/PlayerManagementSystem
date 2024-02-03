@@ -1,5 +1,6 @@
 package com.towsif.PlayerManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,35 +24,43 @@ public class Match implements Serializable
     @Enumerated(EnumType.STRING)
     private MatchType matchType;
 
+    @JsonIgnore
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     private LocalDateTime updatedAt;
 
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
+    @JsonIgnore
     private boolean deleted = false;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private Team winnerTeam;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private Team homeTeam;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private Team awayTeam;
 
     @ManyToMany(
             cascade = CascadeType.ALL
     )
+    @JsonIgnore
     List<Player> players;
 
     public Long getId()

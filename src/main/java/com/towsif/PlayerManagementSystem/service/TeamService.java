@@ -52,9 +52,9 @@ public class TeamService
         teamRepository.save(team);
     }
 
-    public List<Player> findPlayers(Long id)
+    public List<Player> findPlayers(Team team)
     {
-        return playerRepository.findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(id);
+        return playerRepository.findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(team.getId());
     }
 
     public List<Team> findAll()

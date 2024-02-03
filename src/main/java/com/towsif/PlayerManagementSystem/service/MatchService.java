@@ -24,12 +24,13 @@ public class MatchService
 
     private final PaginationAndSortingService paginationAndSortingService;
 
-    public MatchService(MatchRepository matchRepository, TeamRepository teamRepository, PlayerRepository playerRepository, PerformanceRepository performanceRepository, PaginationAndSortingService paginationAndSortingService)
+    public MatchService(MatchRepository matchRepository, PaginationAndSortingService paginationAndSortingService)
     {
         this.matchRepository = matchRepository;
         this.paginationAndSortingService = paginationAndSortingService;
     }
 
+    @Transactional
     public void saveMatch(Match match)
     {
         matchRepository.save(match);
@@ -75,10 +76,10 @@ public class MatchService
                 .toList();
     }
 
-    public Page<Match> findAllMatchesByTeam(Team team, int page, int size, String sortBy, String sortOrder)
+    public Page<Match> findAllMatchesByTeam(Long teamId, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalseAndHomeTeamDeletedFalseAndAwayTeamDeletedFalse(team.getId(), team.getId(), pageable);
+        return matchRepository.findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalseAndHomeTeamDeletedFalseAndAwayTeamDeletedFalse(teamId, teamId, pageable);
     }
 }

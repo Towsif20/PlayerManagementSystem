@@ -3,38 +3,35 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Player</title>
+    <title>Edit Performance</title>
     <!--    <link rel="stylesheet" href="../static/bootstrap.min.css">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
 <div class="container mt-5">
-    <h2 th:text="${update == null} ? 'Create Player' : 'Update Player'" class="text-center mb-4"></h2>
+    <h2 th:text="${update == null} ? 'Create Performance' : 'Update Performance'" class="text-center mb-4"></h2>
 
     <!-- Player creation form -->
-    <form action="#" th:action="@{/players/save}" th:object="${player}", method="POST">
+    <form action="#" th:action="@{/performances/matches/{matchId}/players/{playerId}/save(matchId = ${match.id}, playerId = ${player.id})}"
+          th:object="${performance}", method="POST">
 
         <input type="hidden" th:field="*{id}" />
         <input type="hidden" th:field="*{createdAt}" />
+        <input type="hidden" th:field="*{player}" />
+        <input type="hidden" th:field="*{match}" />
 
-        <input type="text" th:field="*{name}"
-               placeholder="Player Name" class="form-control mb-4 col-4">
+        <label for="runs">Runs</label>
+        <input id="runs" type="number" th:field="*{runs}"
+               placeholder="Runs" class="form-control mb-4 col-4">
 
-        <input type="date" th:field="*{dateOfBirth}"
-               class="form-control mb-4 col-4">
+        <label for="wickets">Wickets</label>
+        <input id="wickets" type="number" th:field="*{wickets}"
+               placeholder="Wickets" class="form-control mb-4 col-4">
 
-        <select class="custom-select form-control mb-4" th:field="*{role}">
-            <option th:value="'ALLROUNDER'" th:text="AllRounder"></option>
-            <option th:value="'BATSMAN'" th:text="Batsman"></option>
-            <option th:value="'BOWLER'" th:text="Bowler"></option>
-            <option th:value="'WICKETKEEPER'" th:text="WicketKeeper"></option>
-        </select>
-
-        <select class="custom-select form-control mb-4" th:field="*{team}">
-            <option value="0">select team</option>
-            <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
-        </select>
+        <label for="catches">Catches</label>
+        <input id="catches" type="number" th:field="*{catches}"
+               placeholder="Catches" class="form-control mb-4 col-4">
 
         <button type="submit" class="btn btn-info col-2"
         th:text="${update == null} ? Save : Update">

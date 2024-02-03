@@ -32,8 +32,8 @@
     <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-10 d-flex">
-            <a th:href="@{/teams/{id}/players(id=${team.id})}" class="btn btn-primary me-3">View Players</a>
-            <a th:href="@{/teams/{id}/matches(id=${team.id})}" class="btn btn-primary me-3">View Matches</a>
+            <a th:href="@{/players/teams/{id}(id=${team.id})}" class="btn btn-primary me-3">View Players</a>
+            <a th:href="@{/matches/teams/{id}(id=${team.id})}" class="btn btn-primary me-3">View Matches</a>
             <a th:href="@{/performances/teams/{id}(id=${team.id})}" class="btn btn-success">View Stats</a>
         </div>
         <div class="col-1 text-end">

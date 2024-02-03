@@ -4,13 +4,16 @@ import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Performance;
 import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Team;
+import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
 import com.towsif.PlayerManagementSystem.service.MatchService;
 import com.towsif.PlayerManagementSystem.service.PerformanceService;
 import com.towsif.PlayerManagementSystem.service.PlayerService;
 import com.towsif.PlayerManagementSystem.service.TeamService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -19,15 +22,22 @@ public class PerformanceController
 {
     private final PerformanceService performanceService;
 
+    private final PerformanceRepository performanceRepository;
+
     private final PlayerService playerService;
 
     private final MatchService matchService;
 
     private final TeamService teamService;
 
-    public PerformanceController(PerformanceService performanceService, PlayerService playerService, MatchService matchService, TeamService teamService)
+    public PerformanceController(PerformanceService performanceService,
+                                 PerformanceRepository performanceRepository,
+                                 PlayerService playerService,
+                                 MatchService matchService,
+                                 TeamService teamService)
     {
         this.performanceService = performanceService;
+        this.performanceRepository = performanceRepository;
         this.playerService = playerService;
         this.matchService = matchService;
         this.teamService = teamService;
@@ -60,19 +70,64 @@ public class PerformanceController
         return teamService.findTeamById(teamId);
     }
 
+    @ModelAttribute
+    public Performance addPerformanceToModel(@PathVariable(required = false) Long matchId,
+                                             @PathVariable(required = false) Long playerId)
+    {
+        if(matchId == null || playerId == null)
+            return null;
+
+        return performanceRepository.findPerformanceByMatchIdAndPlayerIdAndDeletedFalseAndPlayerDeletedFalseAndMatchDeletedFalse(matchId, playerId)
+                .orElse(new Performance(playerService.findPlayerById(playerId), matchService.findMatchById(matchId)));
+    }
+
+    @ModelAttribute("performancePage")
+    public Page<Performance> addPerformancePageToModel(@PathVariable(required = false) Long matchId,
+                                                       @PathVariable(required = false) Long playerId,
+                                                       @PathVariable(required = false) Long teamId,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size,
+                                                       @RequestParam(defaultValue = "id") String sortBy,
+                                                       @RequestParam(defaultValue = "asc") String sortOrder)
+    {
+        if(matchId != null && (playerId == null && teamId == null))
+        {
+            return performanceService.findPerformanceByMatch(matchId, page, size, sortBy, sortOrder);
+        }
+
+        if(playerId != null && (matchId == null && teamId == null))
+        {
+            return performanceService.findPerformanceByPlayer(playerId, page, size, sortBy, sortOrder);
+        }
+
+        if(teamId != null && (playerId == null && matchId == null))
+        {
+            return performanceService.findPerformanceByTeam(teamId, page, size, sortBy, sortOrder);
+        }
+
+        return performanceService.findAllPerformances(page, size, sortBy, sortOrder);
+    }
+
+    @ModelAttribute("sortBy")
+    public String addSortParameterToModel(@RequestParam(defaultValue = "id") String sortBy)
+    {
+        return sortBy;
+    }
+
+    @ModelAttribute("sortOrder")
+    public String addSortOrderToModel(@RequestParam(defaultValue = "asc") String sortOrder)
+    {
+        return sortOrder;
+    }
+
     @GetMapping
     public String showAllPerformances(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "id") String sortBy,
                                       @RequestParam(defaultValue = "asc") String sortOrder,
+                                      @ModelAttribute("performancePage") Page<Performance> performancePage,
                                       Model model)
     {
-        Page<Performance> performancePage = performanceService.findAllPerformances(page, size, sortBy, sortOrder);
-
-        model.addAttribute("performancePage", performancePage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
         return "performances";
     }
 
@@ -83,14 +138,9 @@ public class PerformanceController
                                               @RequestParam(defaultValue = "id") String sortBy,
                                               @RequestParam(defaultValue = "asc") String sortOrder,
                                               @ModelAttribute Player player,
+                                              @ModelAttribute("performancePage") Page<Performance> performancePage,
                                               Model model)
     {
-        Page<Performance> performancePage = performanceService.findPerformanceByPlayer(player, page, size, sortBy, sortOrder);
-
-        model.addAttribute("performancePage", performancePage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
         return "performances";
     }
 
@@ -101,14 +151,9 @@ public class PerformanceController
                                             @RequestParam(defaultValue = "id") String sortBy,
                                             @RequestParam(defaultValue = "asc") String sortOrder,
                                             @ModelAttribute Team team,
+                                            @ModelAttribute("performancePage") Page<Performance> performancePage,
                                             Model model)
     {
-        Page<Performance> performancePage = performanceService.findPerformanceByTeamId(team, page, size, sortBy, sortOrder);
-
-        model.addAttribute("performancePage", performancePage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
         return "performances";
     }
 
@@ -119,34 +164,47 @@ public class PerformanceController
                                              @RequestParam(defaultValue = "id") String sortBy,
                                              @RequestParam(defaultValue = "asc") String sortOrder,
                                              @ModelAttribute Match match,
+                                             @ModelAttribute("performancePage") Page<Performance> performancePage,
                                              Model model)
     {
-        Page<Performance> performancePage = performanceService.findPerformanceByMatch(match, page, size, sortBy, sortOrder);
-
-        model.addAttribute("performancePage", performancePage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
         return "performances";
     }
 
     @GetMapping("/matches/{matchId}/players/{playerId}")
     public String showPerformanceByPlayerAndMatch(@PathVariable Long matchId,
                                                   @PathVariable Long playerId,
-                                                  @RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10") int size,
-                                                  @RequestParam(defaultValue = "id") String sortBy,
-                                                  @RequestParam(defaultValue = "asc") String sortOrder,
-                                                  @ModelAttribute Match match,
-                                                  @ModelAttribute Player player,
+                                                  @ModelAttribute Performance performance,
                                                   Model model)
     {
-        Performance performance = performanceService.findPerformanceByMatchAndPlayer(match, player);
-
-        model.addAttribute("performance", performance);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
         return "performance";
+    }
+
+    @GetMapping("/matches/{matchId}/players/{playerId}/update")
+    public String showPerformanceUpdatePage(@PathVariable Long matchId,
+                                            @PathVariable Long playerId,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size,
+                                            @RequestParam(defaultValue = "id") String sortBy,
+                                            @RequestParam(defaultValue = "asc") String sortOrder,
+                                            @ModelAttribute Match match,
+                                            @ModelAttribute Player player,
+                                            Model model)
+    {
+        return "save_performance";
+    }
+
+    @PostMapping("/matches/{matchId}/players/{playerId}/save")
+    public String savePerformance(@PathVariable Long matchId,
+                                  @PathVariable Long playerId,
+                                  @Valid @ModelAttribute Performance performance, BindingResult bindingResult)
+    {
+        if (bindingResult.hasErrors())
+        {
+            return "save_performance";
+        }
+
+        performanceService.savePerformance(performance);
+
+        return "redirect:/performances/matches/" + matchId + "/players/" + playerId;
     }
 }

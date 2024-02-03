@@ -40,11 +40,11 @@ public class PlayerService
         return playerRepository.findPlayerByDeletedFalse(pageable);
     }
 
-    public Page<Player> findAllPlayersByTeam(Team team, int page, int size, String sortBy, String sortOrder)
+    public Page<Player> findAllPlayersByTeam(Long teamId, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return playerRepository.findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(pageable, team.getId());
+        return playerRepository.findPlayerByTeamIdAndDeletedFalseAndTeamDeletedFalse(pageable, teamId);
     }
 
     public Player findPlayerById(Long id)
@@ -62,11 +62,11 @@ public class PlayerService
     }
 
 
-    public Page<Match> findMatchesByPlayer(Player player, int page, int size, String sortBy, String sortOrder)
+    public Page<Match> findMatchesByPlayer(Long playerId, int page, int size, String sortBy, String sortOrder)
     {
         Pageable pageable = paginationAndSortingService.configurePaginationAndSorting(page, size, sortBy, sortOrder);
 
-        return playerRepository.findMatchesByPlayerId(player.getId(), pageable);
+        return playerRepository.findMatchesByPlayerId(playerId, pageable);
     }
 
 }

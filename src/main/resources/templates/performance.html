@@ -47,10 +47,7 @@
     <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-1 text-end">
-            <a th:href="@{/performances/{id}/update(id = ${performance.id})}" class="btn btn-info me-3">Edit</a>
-        </div>
-        <div class="col-1 text-end">
-            <a th:href="@{/performances/{id}/delete(id = ${performance.id})}" class="btn btn-danger me-3">Delete</a>
+            <a th:href="@{/performances/matches/{matchId}/players/{playerId}/update(matchId = ${match.id}, playerId = ${player.id})}" class="btn btn-info me-3">Edit</a>
         </div>
     </div>
 </div>

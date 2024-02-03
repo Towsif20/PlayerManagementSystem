@@ -43,6 +43,31 @@ public class PlayerController
         return playerService.findPlayerById(id);
     }
 
+    @ModelAttribute("playerPage")
+    public Page<Player> addPlayerPageToModel(@PathVariable(required = false) Long teamId,
+                                             @RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size,
+                                             @RequestParam(defaultValue = "id") String sortBy,
+                                             @RequestParam(defaultValue = "asc") String sortOrder)
+    {
+        if(teamId == null)
+            return playerService.findAllPlayers(page, size, sortBy, sortOrder);
+
+        return playerService.findAllPlayersByTeam(teamId, page, size, sortBy, sortOrder);
+    }
+
+    @ModelAttribute("sortBy")
+    public String addSortParameterToModel(@RequestParam(defaultValue = "id") String sortBy)
+    {
+        return sortBy;
+    }
+
+    @ModelAttribute("sortOrder")
+    public String addSortOrderToModel(@RequestParam(defaultValue = "asc") String sortOrder)
+    {
+        return sortOrder;
+    }
+
     @GetMapping("/create")
     public String showCreatePlayer(Model model)
     {
@@ -69,12 +94,17 @@ public class PlayerController
                                  @RequestParam(defaultValue = "asc") String sortOrder,
                                  Model model)
     {
-        Page<Player> playerPage = playerService.findAllPlayers(page, size, sortBy, sortOrder);
+        return "players";
+    }
 
-        model.addAttribute("playerPage", playerPage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
+    @GetMapping("/teams/{teamId}")
+    public String showAllPlayersByTeam(@PathVariable Long teamId,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size,
+                                       @RequestParam(defaultValue = "id") String sortBy,
+                                       @RequestParam(defaultValue = "asc") String sortOrder,
+                                       Model model)
+    {
         return "players";
     }
 
@@ -82,24 +112,6 @@ public class PlayerController
     public String showPlayerById(@PathVariable Long id, Model model)
     {
         return "player";
-    }
-
-    @GetMapping("/{id}/matches")
-    public String showMatchesByPlayerId(@PathVariable Long id,
-                                        @RequestParam(defaultValue = "0") int page,
-                                        @RequestParam(defaultValue = "10") int size,
-                                        @RequestParam(defaultValue = "id") String sortBy,
-                                        @RequestParam(defaultValue = "asc") String sortOrder,
-                                        @ModelAttribute Player player,
-                                        Model model)
-    {
-        Page<Match> matchPage = playerService.findMatchesByPlayer(player, page, size, sortBy, sortOrder);
-
-        model.addAttribute("matchPage", matchPage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
-        return "matches";
     }
 
     @GetMapping("/{id}/update")

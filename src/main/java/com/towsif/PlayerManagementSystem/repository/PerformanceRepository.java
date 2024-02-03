@@ -54,4 +54,6 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
     long findTotalRunsInAMatchByTeamId(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
 
     Page<Performance> findPerformanceByPlayerTeamIdAndDeletedFalse(Long teamId, Pageable pageable);
+
+    boolean existsByMatchIdAndPlayerIdAndDeletedFalse(Long matchId, Long playerId);
 }

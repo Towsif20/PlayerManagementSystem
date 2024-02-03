@@ -1,5 +1,6 @@
 package com.towsif.PlayerManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -16,12 +17,16 @@ public class Sponsor implements Serializable
     @NotBlank
     private String name;
 
+    @JsonIgnore
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     private LocalDateTime updatedAt;
 
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
+    @JsonIgnore
     private boolean deleted = false;
 
     public Long getId()

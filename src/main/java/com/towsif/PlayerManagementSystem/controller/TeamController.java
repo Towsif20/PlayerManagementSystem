@@ -14,23 +14,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/teams")
 public class TeamController
 {
     private final TeamService teamService;
 
-    private final PlayerService playerService;
-
-    private final MatchService matchService;
-
-    public TeamController(TeamService teamService, PlayerService playerService, MatchService matchService)
+    public TeamController(TeamService teamService)
     {
         this.teamService = teamService;
-        this.playerService = playerService;
-        this.matchService = matchService;
     }
 
     @ModelAttribute("team")
@@ -40,6 +32,27 @@ public class TeamController
             return new Team();
 
         return teamService.findTeamById(id);
+    }
+
+    @ModelAttribute("teamPage")
+    public Page<TeamWithPlayerCountDTO> addTeamPageToModel(@RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size,
+                                                           @RequestParam(defaultValue = "team.name") String sortBy,
+                                                           @RequestParam(defaultValue = "asc") String sortOrder)
+    {
+        return teamService.findAllTeamsWithPlayerCount(page, size, sortBy, sortOrder);
+    }
+
+    @ModelAttribute("sortBy")
+    public String addSortParameterToModel(@RequestParam(defaultValue = "id") String sortBy)
+    {
+        return sortBy;
+    }
+
+    @ModelAttribute("sortOrder")
+    public String addSortOrderToModel(@RequestParam(defaultValue = "asc") String sortOrder)
+    {
+        return sortOrder;
     }
 
     @PostMapping("/save")
@@ -76,55 +89,7 @@ public class TeamController
                                @RequestParam(defaultValue = "asc") String sortOrder,
                                Model model)
     {
-        Page<TeamWithPlayerCountDTO> teamPage = teamService.findAllTeamsWithPlayerCount(page, size, sortBy, sortOrder);
-
-        model.addAttribute("teamPage", teamPage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
         return "teams";
-    }
-
-    @GetMapping("/{id}/players")
-    public String showPlayers(@PathVariable Long id,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "10") int size,
-                              @RequestParam(defaultValue = "id") String sortBy,
-                              @RequestParam(defaultValue = "asc") String sortOrder,
-                              @ModelAttribute Team team,
-                              Model model)
-    {
-        Page<Player> playerPage = playerService.findAllPlayersByTeam(team, page, size, sortBy, sortOrder);
-
-        model.addAttribute("playerPage", playerPage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
-        return "players";
-    }
-
-    @GetMapping("/{id}/playersResponseBody")
-    public @ResponseBody List<Player> getPlayers(@PathVariable Long id, Model model)
-    {
-        return teamService.findPlayers(id);
-    }
-
-    @GetMapping("{id}/matches")
-    public String showMatches(@PathVariable Long id,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "10") int size,
-                              @RequestParam(defaultValue = "date") String sortBy,
-                              @RequestParam(defaultValue = "desc") String sortOrder,
-                              @ModelAttribute Team team,
-                              Model model)
-    {
-        Page<Match> matchPage = matchService.findAllMatchesByTeam(team, page, size, sortBy, sortOrder);
-
-        model.addAttribute("matchPage", matchPage);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortOrder", sortOrder);
-
-        return "matches";
     }
 
     @GetMapping("/{id}")
