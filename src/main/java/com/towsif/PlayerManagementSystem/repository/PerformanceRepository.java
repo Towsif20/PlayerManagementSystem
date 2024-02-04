@@ -23,37 +23,6 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
 
     Page<Performance> findPerformanceByPlayerIdAndDeletedFalseAndPlayerDeletedFalse(Long id, Pageable pageable);
 
-    @Query(
-            "SELECT SUM(p.runs) " +
-                    "FROM Performance p " +
-                    "WHERE p.player.id=:id " +
-                    "AND p.deleted = false " +
-                    "And p.player.deleted = false"
-    )
-    long findRunsByPlayerId(Long id);
-
-    @Query(
-            "SELECT SUM(p.runs) " +
-                    "FROM Performance p " +
-                    "WHERE p.match.id=:id " +
-                    "AND p.deleted = false " +
-                    "And p.match.deleted = false"
-    )
-    long findRunsByMatchId(Long id);
-
-    @Query("SELECT SUM(performance.runs) " +
-            "FROM Performance performance " +
-            "JOIN performance.player player " +
-            "JOIN performance.match match " +
-            "WHERE (match.homeTeam.id = :teamId OR match.awayTeam.id = :teamId) " +
-            "AND match.id = :matchId " +
-            "AND performance.deleted = false " +
-            "And performance.player.deleted = false " +
-            "And performance.match.deleted = false"
-    )
-    long findTotalRunsInAMatchByTeamId(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
-
     Page<Performance> findPerformanceByPlayerTeamIdAndDeletedFalse(Long teamId, Pageable pageable);
 
-    boolean existsByMatchIdAndPlayerIdAndDeletedFalse(Long matchId, Long playerId);
 }

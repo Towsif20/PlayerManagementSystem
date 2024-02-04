@@ -16,8 +16,5 @@ public interface MatchRepository extends JpaRepository<Match, Long>
     Optional<Match> findMatchByIdAndDeletedFalse(Long id);
 
     Page<Match> findMatchByHomeTeamIdOrAwayTeamIdAndDeletedFalseAndHomeTeamDeletedFalseAndAwayTeamDeletedFalse(Long homeTeamId, Long awayTeamId, Pageable pageable);
-    
-    Page<Match> findMatchByHomeTeamIdAndDeletedFalseAndHomeTeamDeletedFalse(Long teamId, Pageable pageable);
 
-    Page<Match> findMatchByAwayTeamIdAndDeletedFalseAndAwayTeamDeletedFalse(Long teamId, Pageable pageable);
 }
