@@ -54,7 +54,6 @@ public class MatchService
     }
 
 
-    @GetMapping("/{id}")
     public List<Player> findHomeTeamPlayers(Match match)
     {
         return match.getPlayers().stream()
@@ -63,7 +62,6 @@ public class MatchService
                 .toList();
     }
 
-    @GetMapping("/{id}")
     public List<Player> findAwayTeamPlayers(Match match)
     {
         return match.getPlayers().stream()
