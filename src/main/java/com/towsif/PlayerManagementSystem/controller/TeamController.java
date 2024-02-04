@@ -1,11 +1,7 @@
 package com.towsif.PlayerManagementSystem.controller;
 
 import com.towsif.PlayerManagementSystem.dto.TeamWithPlayerCountDTO;
-import com.towsif.PlayerManagementSystem.entity.Match;
-import com.towsif.PlayerManagementSystem.entity.Player;
 import com.towsif.PlayerManagementSystem.entity.Team;
-import com.towsif.PlayerManagementSystem.service.MatchService;
-import com.towsif.PlayerManagementSystem.service.PlayerService;
 import com.towsif.PlayerManagementSystem.service.TeamService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
