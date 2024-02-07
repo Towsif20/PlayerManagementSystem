@@ -10,7 +10,6 @@
 <div class="container mt-5">
     <h2 class=" mb-4">Player Details</h2>
 
-    <!-- Display basic player information in a Bootstrap card -->
     <div class="card mb-4 mr-8">
         <div class="card-body">
             <div class="row">
@@ -34,7 +33,6 @@
         </div>
     </div>
 
-    <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-10 d-flex">
             <a th:href="@{/matches/players/{id}(id=${player.id})}" class="btn btn-primary me-3">View Matches</a>

@@ -10,7 +10,6 @@
 <div class="container mt-5">
     <h2 class=" mb-4">Performance Details</h2>
 
-    <!-- Display basic performance information in a Bootstrap card -->
     <div class="card mb-4 mr-8">
         <div class="card-body">
             <div class="row">
@@ -44,7 +43,6 @@
         </div>
     </div>
 
-    <!-- Buttons with Bootstrap classes to navigate to matches and stats pages -->
     <div class="row">
         <div class="col-1 text-end">
             <a th:href="@{/performances/matches/{matchId}/players/{playerId}/update(matchId = ${match.id}, playerId = ${player.id})}" class="btn btn-info me-3">Edit</a>

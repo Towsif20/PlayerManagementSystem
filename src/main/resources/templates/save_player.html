@@ -12,7 +12,6 @@
 <div class="container mt-5">
     <h2 th:text="${update == null} ? 'Create Player' : 'Update Player'" class="text-center mb-4"></h2>
 
-    <!-- Player creation form -->
     <form action="#" th:action="@{/players/save}" th:object="${player}", method="POST">
 
         <input type="hidden" th:field="*{id}" />
@@ -42,9 +41,7 @@
     </form>
 </div>
 
-<!-- Add Bootstrap JS and Popper.js scripts (required for Bootstrap) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Your custom JavaScript scripts or links here -->
 
 </body>
 </html>

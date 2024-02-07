@@ -9,7 +9,6 @@
 <body>
     <div class="row m-4">
 
-        <!-- First Column -->
         <div class="col-6 p-4" >
             <h2>Home</h2>
             <h3> <a th:href="@{/teams/{id}(id=${match.homeTeam.id})}" th:text="${match.homeTeam.name}"></a></h3>
@@ -20,23 +19,19 @@
                     <span><a th:text="Performance"
                              th:href="@{/performances/matches/{matchId}/players/{playerId}(matchId = ${match.id}, playerId = ${player.id})}">
                     </a></span>
-                    <!-- Add more properties or customize as needed -->
                 </li>
             </ul>
         </div>
 
-        <!-- Second Column -->
         <div class="col-6 p-4">
             <h2>Away</h2>
             <h3> <a th:href="@{/teams/{id}(id=${match.awayTeam.id})}" th:text="${match.awayTeam.name}"></a></h3>
             <ul>
-                <!-- Iterate over items for the second column -->
                 <li th:each="player : ${awayPlayers}">
                     <span><a class="btn btn-primary" th:text="${player.name}" th:href="@{/players/{id}(id = ${player.id})}"></a></span>
                     <span><a th:text="Performance"
                              th:href="@{/performances/matches/{matchId}/players/{playerId}(matchId = ${match.id}, playerId = ${player.id})}">
                     </a></span>
-                    <!-- Add more properties or customize as needed -->
                 </li>
             </ul>
         </div>
