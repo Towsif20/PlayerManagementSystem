@@ -14,8 +14,6 @@ import java.util.Optional;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long>
 {
-    Page<Team> findTeamByDeletedFalse(Pageable pageable);
-
     List<Team> findTeamByDeletedFalse();
 
     Optional<Team> findTeamByIdAndDeletedFalse(Long id);

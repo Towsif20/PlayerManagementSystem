@@ -1,12 +1,7 @@
 package com.towsif.PlayerManagementSystem.service;
 
-import com.towsif.PlayerManagementSystem.entity.Match;
 import com.towsif.PlayerManagementSystem.entity.Performance;
-import com.towsif.PlayerManagementSystem.entity.Player;
-import com.towsif.PlayerManagementSystem.repository.MatchRepository;
 import com.towsif.PlayerManagementSystem.repository.PerformanceRepository;
-import com.towsif.PlayerManagementSystem.repository.PlayerRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,17 +12,11 @@ public class PerformanceService
 {
     private final PerformanceRepository performanceRepository;
 
-    private final MatchRepository matchRepository;
-
-    private final PlayerRepository playerRepository;
-
     private final PaginationAndSortingService paginationAndSortingService;
 
-    public PerformanceService(PerformanceRepository performanceRepository, MatchRepository matchRepository, PlayerRepository playerRepository, PaginationAndSortingService paginationAndSortingService)
+    public PerformanceService(PerformanceRepository performanceRepository, PaginationAndSortingService paginationAndSortingService)
     {
         this.performanceRepository = performanceRepository;
-        this.matchRepository = matchRepository;
-        this.playerRepository = playerRepository;
         this.paginationAndSortingService = paginationAndSortingService;
     }
 
@@ -44,30 +33,6 @@ public class PerformanceService
         return performanceRepository.findPerformanceByDeletedFalse(pageable);
     }
 
-    public Performance findPerformanceById(Long id)
-    {
-        return performanceRepository.findPerformanceByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("Performance not found with id " + id));
-    }
-
-    @Transactional
-    public void deletePerformanceById(Long id)
-    {
-        Performance performance = performanceRepository.findPerformanceByIdAndDeletedFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("Performance not found with id " + id));
-
-        performance.setDeleted(true);
-
-        performanceRepository.save(performance);
-    }
-
-
-
-    public Performance findPerformanceByMatchAndPlayer(Match match, Player player)
-    {
-        return performanceRepository.findPerformanceByMatchIdAndPlayerIdAndDeletedFalseAndPlayerDeletedFalseAndMatchDeletedFalse(match.getId(), player.getId())
-                .orElseThrow(() -> new EntityNotFoundException("No performance found in match " + player + " for player " + match));
-    }
 
     public Page<Performance> findPerformanceByMatch(Long matchId, int page, int size, String sortBy, String sortOrder)
     {

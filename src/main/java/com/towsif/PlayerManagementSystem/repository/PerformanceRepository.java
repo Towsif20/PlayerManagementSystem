@@ -13,8 +13,6 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long>
 {
     Page<Performance> findPerformanceByDeletedFalse(Pageable pageable);
 
-    Optional<Performance> findPerformanceByIdAndDeletedFalse(Long id);
-
     Optional<Performance> findPerformanceByMatchIdAndPlayerIdAndDeletedFalseAndPlayerDeletedFalseAndMatchDeletedFalse(Long matchId, Long playerId);
 
     Page<Performance> findPerformanceByMatchIdAndDeletedFalseAndMatchDeletedFalse(Long id, Pageable pageable);

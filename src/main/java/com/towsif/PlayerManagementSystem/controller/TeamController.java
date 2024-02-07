@@ -40,7 +40,7 @@ public class TeamController
     }
 
     @ModelAttribute("sortBy")
-    public String addSortParameterToModel(@RequestParam(defaultValue = "id") String sortBy)
+    public String addSortParameterToModel(@RequestParam(defaultValue = "team.name") String sortBy)
     {
         return sortBy;
     }
