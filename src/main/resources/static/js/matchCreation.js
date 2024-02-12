@@ -82,6 +82,8 @@ function addSelectedPlayersToList(checkboxSelector, selectedPlayersItemList, sel
 
 function addHomePlayers()
 {
+    homePlayers = []
+
     addSelectedPlayersToList('#availableHomePlayersList', selectedHomePlayersItemList, homePlayers);
 
     updateSelectedPlayers();
@@ -89,6 +91,8 @@ function addHomePlayers()
 
 function addAwayPlayers()
 {
+    awayPlayers = []
+
     addSelectedPlayersToList('#availableAwayPlayersList', selectedAwayPlayersItemList, awayPlayers);
 
     updateSelectedPlayers();

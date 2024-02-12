@@ -28,6 +28,15 @@ public class MatchService
     @Transactional
     public void saveMatch(Match match)
     {
+        Match existingMatch = matchRepository.findMatchByIdAndDeletedFalse(match.getId()).orElse(null);
+
+        if(existingMatch != null)
+        {
+            existingMatch.getPlayers().clear();
+
+            matchRepository.save(existingMatch);
+        }
+
         matchRepository.save(match);
     }
 
