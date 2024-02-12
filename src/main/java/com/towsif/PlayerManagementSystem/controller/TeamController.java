@@ -65,7 +65,7 @@ public class TeamController
     }
 
     @GetMapping("/create")
-    public String showCreateTeam(Model model)
+    public String showCreateTeam()
     {
         return "save_team";
     }
@@ -82,22 +82,20 @@ public class TeamController
     public String showAllTeams(@RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "20") int size,
                                @RequestParam(defaultValue = "team") String sortBy,
-                               @RequestParam(defaultValue = "asc") String sortOrder,
-                               Model model)
+                               @RequestParam(defaultValue = "asc") String sortOrder)
     {
         return "teams";
     }
 
     @GetMapping("/{id}")
-    public String showTeamById(@PathVariable Long id, Model model)
+    public String showTeamById(@PathVariable Long id)
     {
         return "team";
     }
 
     @GetMapping("/{id}/delete")
     public String deleteTeam(@PathVariable Long id,
-                             @ModelAttribute Team team,
-                             Model model)
+                             @ModelAttribute Team team)
     {
         teamService.deleteTeam(team);
 

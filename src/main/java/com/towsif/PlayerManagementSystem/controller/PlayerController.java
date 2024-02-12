@@ -68,7 +68,7 @@ public class PlayerController
     }
 
     @GetMapping("/create")
-    public String showCreatePlayer(Model model)
+    public String showCreatePlayer()
     {
         return "save_player";
     }
@@ -90,8 +90,7 @@ public class PlayerController
     public String showAllPlayers(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size,
                                  @RequestParam(defaultValue = "id") String sortBy,
-                                 @RequestParam(defaultValue = "asc") String sortOrder,
-                                 Model model)
+                                 @RequestParam(defaultValue = "asc") String sortOrder)
     {
         return "players";
     }
@@ -101,14 +100,13 @@ public class PlayerController
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
                                        @RequestParam(defaultValue = "id") String sortBy,
-                                       @RequestParam(defaultValue = "asc") String sortOrder,
-                                       Model model)
+                                       @RequestParam(defaultValue = "asc") String sortOrder)
     {
         return "players";
     }
 
     @GetMapping("/{id}")
-    public String showPlayerById(@PathVariable Long id, Model model)
+    public String showPlayerById(@PathVariable Long id)
     {
         return "player";
     }
@@ -123,8 +121,7 @@ public class PlayerController
 
     @GetMapping("/{id}/delete")
     public String deletePlayer(@PathVariable Long id,
-                               @ModelAttribute Player player,
-                               Model model)
+                               @ModelAttribute Player player)
     {
         playerService.deletePlayer(player);
 

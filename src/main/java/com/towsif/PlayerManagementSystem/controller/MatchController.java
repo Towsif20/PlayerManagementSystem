@@ -113,8 +113,7 @@ public class MatchController
     public String showAllMatches(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size,
                                  @RequestParam(defaultValue = "date") String sortBy,
-                                 @RequestParam(defaultValue = "desc") String sortOrder,
-                                 Model model)
+                                 @RequestParam(defaultValue = "desc") String sortOrder)
     {
         return "matches";
     }
@@ -124,8 +123,7 @@ public class MatchController
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
                                        @RequestParam(defaultValue = "date") String sortBy,
-                                       @RequestParam(defaultValue = "desc") String sortOrder,
-                                       Model model)
+                                       @RequestParam(defaultValue = "desc") String sortOrder)
     {
         return "matches";
     }
@@ -135,14 +133,13 @@ public class MatchController
                                          @RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "10") int size,
                                          @RequestParam(defaultValue = "date") String sortBy,
-                                         @RequestParam(defaultValue = "desc") String sortOrder,
-                                         Model model)
+                                         @RequestParam(defaultValue = "desc") String sortOrder)
     {
         return "matches";
     }
 
     @GetMapping("/{id}")
-    public String showMatchById(@PathVariable Long id, Model model)
+    public String showMatchById(@PathVariable Long id)
     {
         return "match";
     }
@@ -162,7 +159,7 @@ public class MatchController
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteMatchById(@ModelAttribute Match match, Model model)
+    public String deleteMatchById(@ModelAttribute Match match)
     {
         matchService.deleteMatch(match);
 

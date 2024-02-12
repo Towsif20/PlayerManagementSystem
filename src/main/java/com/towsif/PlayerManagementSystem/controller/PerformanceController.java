@@ -12,7 +12,6 @@ import com.towsif.PlayerManagementSystem.service.TeamService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -125,8 +124,7 @@ public class PerformanceController
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "id") String sortBy,
                                       @RequestParam(defaultValue = "asc") String sortOrder,
-                                      @ModelAttribute("performancePage") Page<Performance> performancePage,
-                                      Model model)
+                                      @ModelAttribute("performancePage") Page<Performance> performancePage)
     {
         return "performances";
     }
@@ -138,8 +136,7 @@ public class PerformanceController
                                               @RequestParam(defaultValue = "id") String sortBy,
                                               @RequestParam(defaultValue = "asc") String sortOrder,
                                               @ModelAttribute Player player,
-                                              @ModelAttribute("performancePage") Page<Performance> performancePage,
-                                              Model model)
+                                              @ModelAttribute("performancePage") Page<Performance> performancePage)
     {
         return "performances";
     }
@@ -151,8 +148,7 @@ public class PerformanceController
                                             @RequestParam(defaultValue = "id") String sortBy,
                                             @RequestParam(defaultValue = "asc") String sortOrder,
                                             @ModelAttribute Team team,
-                                            @ModelAttribute("performancePage") Page<Performance> performancePage,
-                                            Model model)
+                                            @ModelAttribute("performancePage") Page<Performance> performancePage)
     {
         return "performances";
     }
@@ -164,8 +160,7 @@ public class PerformanceController
                                              @RequestParam(defaultValue = "id") String sortBy,
                                              @RequestParam(defaultValue = "asc") String sortOrder,
                                              @ModelAttribute Match match,
-                                             @ModelAttribute("performancePage") Page<Performance> performancePage,
-                                             Model model)
+                                             @ModelAttribute("performancePage") Page<Performance> performancePage)
     {
         return "performances";
     }
@@ -173,8 +168,7 @@ public class PerformanceController
     @GetMapping("/matches/{matchId}/players/{playerId}")
     public String showPerformanceByPlayerAndMatch(@PathVariable Long matchId,
                                                   @PathVariable Long playerId,
-                                                  @ModelAttribute Performance performance,
-                                                  Model model)
+                                                  @ModelAttribute Performance performance)
     {
         return "performance";
     }
@@ -187,8 +181,7 @@ public class PerformanceController
                                             @RequestParam(defaultValue = "id") String sortBy,
                                             @RequestParam(defaultValue = "asc") String sortOrder,
                                             @ModelAttribute Match match,
-                                            @ModelAttribute Player player,
-                                            Model model)
+                                            @ModelAttribute Player player)
     {
         return "save_performance";
     }
